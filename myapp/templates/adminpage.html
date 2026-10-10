@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | Car Villa</title>
+
+```
+<!-- 🔥 NO CACHE FIX -->
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<script>
+    // 🔥 Prevent back button after logout
+    window.history.forward();
+
+    function noBack() {
+        window.history.forward();
+    }
+
+    window.onload = noBack;
+
+    window.onpageshow = function(evt) {
+        if (evt.persisted) noBack();
+    };
+
+    window.onunload = function() {};
+</script>
+
+<link href="{% static 'af/assets/css/bootstrap.css' %}" rel="stylesheet" />
+<link href="{% static 'af/assets/css/font-awesome.css' %}" rel="stylesheet" />
+<link href="{% static 'af/assets/css/basic.css' %}" rel="stylesheet" />
+<link href="{% static 'af/assets/css/custom.css' %}" rel="stylesheet" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+<style>
+    .page-head-line { border-bottom: 2px solid #00ca79; color: #333; padding-bottom: 10px; margin-bottom: 25px; }
+    .user-img-div { background: #202020; padding: 20px; border-bottom: 1px solid #444; }
+    #login-timer { color: #00ca79; font-weight: bold; }
+    .main-box { transition: 0.3s; }
+    .main-box:hover { transform: translateY(-5px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+</style>
+```
+
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+                <a class="navbar-brand" href="#">CAR VILLA ADMIN</a>
+            </div>
+
+```
+        <div class="header-right">
+            <a href="/logout/" class="btn btn-danger" title="Logout">Logout <i class="fa fa-sign-out"></i></a>
+        </div>
+    </nav>
+
+    <nav class="navbar-default navbar-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu">
+                <li>
+                    <div class="user-img-div">
+                        <img src="{% static 'af/assets/img/user.png' %}" class="img-thumbnail" />
+                        <div class="inner-text">
+                            Welcome, {{ request.session.name|default:"Admin" }}
+                            <br />
+                            <small>Session started: <span id="login-timer">Calculating...</span></small>
+                        </div>
+                    </div>
+                </li>
+                <li><a class="active-menu" href="/ap/"><i class="fa fa-dashboard"></i>Dashboard</a></li>
+                <li><a href="/adp/"><i class="fa fa-plus-circle"></i>New Vehicles</a></li>
+                <li><a href="/lms/"><i class="fa fa-car"></i>List Vehicles</a></li>
+                <li><a href="/lc/"><i class="fa fa-users"></i>Our Customers</a></li>
+                <li><a href="/abl/"><i class="fa fa-key"></i>Rent Closing</a></li>
+                <li><a href="/abh/"><i class="fa fa-history"></i>Booking History</a></li>
+                <li><a href="/cp/"><i class="fa fa-lock"></i>Change Password</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-head-line">DASHBOARD</h1>
+                    <p class="page-subhead-line">Welcome back! Here is a quick overview of your fleet performance.</p>
+                </div>
+            </div>
+
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="main-box mb-red">
+                        <a href="/abl/">
+                            <i class="fa fa-car fa-5x"></i>
+                            <h5>Active Rentals</h5>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="main-box mb-dull">
+                        <a href="/lc/">
+                            <i class="fa fa-users fa-5x"></i>
+                            <h5>Manage Users</h5>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="main-box mb-pink">
+                        <a href="/abh/">
+                            <i class="fa fa-money fa-5x"></i>
+                            <h5>Revenue History</h5>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">System Overview</div>
+                        <div class="panel-body">
+                            <div class="alert alert-info">
+                                <i class="fa fa-info-circle"></i> <strong>Pro Tip:</strong> Ensure all vehicles are marked "Free" immediately after rent closing to maximize visibility for users.
+                            </div>
+                            <div class="list-group">
+                                <a href="/lms/" class="list-group-item">
+                                    <h4 class="list-group-item-heading">Inventory Health</h4>
+                                    <p class="list-group-item-text">Check for vehicles requiring maintenance or document renewals (Insurance/Fitness).</p>
+                                </a>
+                            </div>
+                            <br />
+                            <div id="carousel-example" class="carousel slide" data-ride="carousel" style="border: 5px solid #ddd; border-radius: 8px;">
+                                <div class="carousel-inner">
+                                    <div class="item active">
+                                        <img src="{% static 'af/assets/img/slideshow/1.jpg' %}" alt="Fleet 1" style="width:100%; height:300px; object-fit:cover;" />
+                                    </div>
+                                    <div class="item">
+                                        <img src="{% static 'af/assets/img/slideshow/2.jpg' %}" alt="Fleet 2" style="width:100%; height:300px; object-fit:cover;" />
+                                    </div>
+                                </div>
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carousel-example" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carousel-example" data-slide-to="1"></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <i class="fa fa-bell fa-fw"></i> Recent System Logs
+                        </div>
+                        <div class="panel-body">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-user-plus fa-fw"></i> New Customer Registration
+                                    <span class="pull-right text-muted small"><em>Just now</em></span>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-check fa-fw"></i> Rent Closed: Booking #104
+                                    <span class="pull-right text-muted small"><em>27 mins ago</em></span>
+                                </a>
+                                <a href="#" class="list-group-item">
+                                    <i class="fa fa-warning fa-fw"></i> Overdue Return Warning
+                                    <span class="pull-right text-muted small"><em>43 mins ago</em></span>
+                                </a>
+                            </div>
+                            <a href="/abh/" class="btn btn-info btn-block">View Full History</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footer-sec">
+    &copy; 2026 Car Villa | Design By : <a href="http://www.binarytheme.com/" target="_blank">BinaryTheme.com</a>
+</div>
+
+<script src="{% static 'af/assets/js/jquery-1.10.2.js' %}"></script>
+<script src="{% static 'af/assets/js/bootstrap.js' %}"></script>
+<script src="{% static 'af/assets/js/jquery.metisMenu.js' %}"></script>
+<script src="{% static 'af/assets/js/custom.js' %}"></script>
+
+<script>
+    function updateLoginTimer() {
+        const loginTimeStr = "{{ request.session.login_time }}";
+        if (!loginTimeStr) {
+            document.getElementById('login-timer').innerText = "Just now";
+            return;
+        }
+
+        const loginTime = new Date(loginTimeStr);
+        const now = new Date();
+        const diffMs = now - loginTime;
+
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHrs = Math.floor(diffMins / 60);
+
+        let displayStr = "";
+        if (diffHrs > 0) {
+            displayStr = `${diffHrs}h ${diffMins % 60}m ago`;
+        } else if (diffMins > 0) {
+            displayStr = `${diffMins}m ago`;
+        } else {
+            displayStr = "Just now";
+        }
+        document.getElementById('login-timer').innerText = displayStr;
+    }
+    setInterval(updateLoginTimer, 60000);
+    updateLoginTimer();
+</script>
+```
+
+</body>
+</html>

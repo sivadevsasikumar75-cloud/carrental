@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<title>Change Password | Car Villa</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="{% static 'log/images/icons/favicon.ico' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'log/vendor/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'log/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'log/fonts/iconic/css/material-design-iconic-font.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'log/css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'log/css/main.css' %}">
+<style>
+        /* Custom styling for Error Messages */
+        .error-msg {
+            color: #ffcccc;
+            background: rgba(255, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+        }
+        .container-login100 {
+            background: linear-gradient(45deg, #202020, #2c3e50); /* Darker, professional gradient */
+        }
+        .login100-form-logo {
+            background-color: #00ca79; /* Matching the green theme from the admin dashboard */
+        }
+    </style>
+</head>
+<body>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<form class="login100-form validate-form" method="post">
+					{% csrf_token %}
+					<span class="login100-form-logo">
+						<i class="zmdi zmdi-lock-outline"></i>
+					</span>
+
+					<span class="login100-form-title p-b-34 p-t-27">
+						Change Password
+					</span>
+
+                    {% if error %}
+                    <div class="error-msg">
+                        <i class="fa fa-exclamation-triangle"></i> {{error}}
+                    </div>
+                    {% endif %}
+
+					<div class="wrap-input100 validate-input" data-validate = "Current password is required">
+						<input class="input100" type="password" name="t1" placeholder="Current Password">
+						<span class="focus-input100" data-placeholder="&#xf191;"></span>
+					</div>
+
+				   <div class="wrap-input100 validate-input" data-validate="New password is required">
+						<input class="input100" type="password" name="t2" placeholder="New Password">
+						<span class="focus-input100" data-placeholder="&#xf191;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Please confirm new password">
+						<input class="input100" type="password" name="t3" placeholder="Confirm New Password">
+						<span class="focus-input100" data-placeholder="&#xf191;"></span>
+					</div>
+
+					<div class="container-login100-form-btn p-t-10">
+						<button class="login100-form-btn" type="submit" style="background: #00ca79;">
+							Update Password
+						</button>
+					</div>
+
+					<div class="text-center p-t-40">
+						<a class="txt1" href="/ap/">
+							<i class="fa fa-long-arrow-left"></i> Back to Dashboard
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="dropDownSelect1"></div>
+
+<script src="{% static 'log/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+	<script src="{% static 'log/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'log/js/main.js' %}"></script>
+
+</body>
+</html>

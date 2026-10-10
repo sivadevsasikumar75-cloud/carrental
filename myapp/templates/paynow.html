@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Payment - CarVilla</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'book/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'book/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a href="/" class="navbar-brand px-4">
+            <h2 class="m-0 text-primary"><i class="fa fa-car"></i> CarVilla</h2>
+        </a>
+    </nav>
+
+    <div class="container-fluid bg-secondary booking my-5">
+        <div class="container">
+            <div class="row gx-5">
+                <div class="col-lg-6 py-5">
+                    <h1 class="text-white mb-4">Secure Payment</h1>
+                    <p class="text-white">Review your security deposit and enter payment details to finalize your booking.</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="bg-primary h-100 d-flex flex-column justify-content-center text-center p-5">
+                        <h2 class="text-white mb-4">Payment Details</h2>
+
+                        {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                        {% endif %}
+
+                        <form method="post" action="/pays/" onsubmit="return validateForm()">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="text-white d-block text-start">Card Number</label>
+                                    <input type="text" id="card" name="cno" class="form-control" placeholder="Enter Card Number">
+                                    <small id="cardError" class="text-danger"></small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input type="text" id="expiry" class="form-control" placeholder="MM/YY">
+                                    <small id="expError" class="text-danger"></small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <input type="password" id="cvv" class="form-control" placeholder="CVV">
+                                    <small id="cvvError" class="text-danger"></small>
+                                </div>
+
+                                <div class="col-12">
+                                    <input type="text" id="name" class="form-control" placeholder="Card Holder Name">
+                                    <small id="nameError" class="text-danger"></small>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="text-white d-block text-start">Amount to Pay (Security Deposit)</label>
+                                    <input type="text" value="{{bamt}}" class="form-control" readonly style="background: #eee;">
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-secondary w-100 py-3">CONFIRM & PAY</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            let valid = true;
+            let card = document.getElementById("card").value;
+            let expiry = document.getElementById("expiry").value;
+            let cvv = document.getElementById("cvv").value;
+            let name = document.getElementById("name").value;
+
+            // Reset errors
+            document.getElementById("cardError").innerHTML = "";
+            document.getElementById("expError").innerHTML = "";
+            document.getElementById("cvvError").innerHTML = "";
+            document.getElementById("nameError").innerHTML = "";
+
+            // Minimal Card Check (Just not empty)
+            if (card.trim() === "") {
+                document.getElementById("cardError").innerHTML = "Card number is required";
+                valid = false;
+            }
+
+            // Expiry Check
+            if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry)) {
+                document.getElementById("expError").innerHTML = "Use MM/YY format";
+                valid = false;
+            }
+
+            // CVV Check
+            if (!/^\d{3}$/.test(cvv)) {
+                document.getElementById("cvvError").innerHTML = "3-digit CVV required";
+                valid = false;
+            }
+
+            // Name Check
+            if (name.trim() === "" || !/^[A-Za-z ]+$/.test(name)) {
+                document.getElementById("nameError").innerHTML = "Enter a valid name";
+                valid = false;
+            }
+
+            return valid;
+        }
+    </script>
+</body>
+</html>

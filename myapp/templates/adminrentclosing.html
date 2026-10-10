@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+{% load static %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Rent Closing</title>
+    <link href="{% static 'af/assets/css/bootstrap.css' %}" rel="stylesheet" />
+    <link href="{% static 'af/assets/css/font-awesome.css' %}" rel="stylesheet" />
+    <link href="{% static 'af/assets/css/basic.css' %}" rel="stylesheet" />
+    <link href="{% static 'af/assets/css/custom.css' %}" rel="stylesheet" />
+</head>
+
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-default navbar-cls-top">
+        <div class="navbar-header"><a class="navbar-brand">ADMIN PANEL</a></div>
+        <div class="header-right"><a href="/logout/" class="btn btn-danger">Logout</a></div>
+    </nav>
+
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <h1 class="page-head-line">VEHICLE RENT CLOSING</h1>
+            <div class="panel panel-info">
+                <div class="panel-heading">Process Return Details (Booking #{{bno}})</div>
+                <div class="panel-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Vehicle No / Name</label>
+                                <input class="form-control" value="{{vno}} - {{vname}}" readonly>
+
+                                <label>No of Days</label>
+                                <input class="form-control" id="nod" value="{{ nod }}" readonly>
+
+                                <label>Rent per Day</label>
+                                <input class="form-control" id="rday" value="{{rday}}" readonly>
+
+                                <label>Base Rent Total</label>
+                                <input class="form-control" id="charge" value="{{charge}}" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Start Odometer (Past Kms)</label>
+                                <input class="form-control" id="cread" value="{{cread}}" readonly>
+
+                                <label>End Odometer (Present Kms)</label>
+                                <input class="form-control" type="number" name="pread" id="pread" placeholder="Enter current reading" required>
+
+                                <label>Total Kms Driven</label>
+                                <input class="form-control" name="kms" id="kms" readonly>
+
+                                <label>Max Allowed Km (Total for {{nod}} days)</label>
+                                <input class="form-control" id="max_km_display" value="{{ max_km }} per day" readonly>
+                                <input type="hidden" id="max_km_val" value="{{max_km}}">
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Excess Km</label>
+                                <input class="form-control" name="ekm" id="ekm" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Excess Charge (Rate: {{erate}})</label>
+                                <input class="form-control" name="echarge" id="echarge" readonly>
+                                <input type="hidden" id="erate_val" value="{{erate}}">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Total Payable</label>
+                                <input class="form-control" name="tcharge" id="tcharge" readonly style="background: #dff0d8; font-weight: bold; border: 2px solid #3c763d;">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Security Deposit (Paid)</label>
+                                <input class="form-control" id="sdepo" value="{{sdepo}}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="col-md-12">
+                                <label>Balance Amount (Payable / Refundable)</label>
+                                <input class="form-control" name="bal" id="bal" readonly style="font-size: 1.8em; height: 60px; color: #a94442; font-weight: bold; background: #f2dede;">
+                            </div>
+                        </div>
+
+                        <br>
+                        <button type="submit" class="btn btn-success btn-lg btn-block">FINAL CLOSE & GENERATE BILL</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function calcAll() {
+    // 1. Get Base Values
+    let startKm = parseFloat(document.getElementById("cread").value) || 0;
+    let endKm = parseFloat(document.getElementById("pread").value) || 0;
+    let maxKmPerDay = parseFloat(document.getElementById("max_km_val").value) || 0;
+    let excessRate = parseFloat(document.getElementById("erate_val").value) || 0;
+    let baseRent = parseFloat(document.getElementById("charge").value) || 0;
+    let deposit = parseFloat(document.getElementById("sdepo").value) || 0;
+
+    // --- FORCE DURATION TO AT LEAST 1 ---
+    let nodElement = document.getElementById("nod");
+    let nod = parseFloat(nodElement.value);
+
+    if (isNaN(nod) || nod <= 0) {
+        nod = 1;
+        nodElement.value = 1;
+    }
+
+    // 2. KM Calculations
+    let totalKms = endKm - startKm;
+    if (totalKms < 0) totalKms = 0;
+    document.getElementById("kms").value = totalKms.toFixed(0);
+
+    // 3. Excess Calculations
+    let totalAllowed = maxKmPerDay * nod;
+    let excessKms = totalKms - totalAllowed;
+    if (excessKms < 0) excessKms = 0;
+    document.getElementById("ekm").value = excessKms.toFixed(0);
+
+    let excessCharge = excessKms * excessRate;
+    document.getElementById("echarge").value = excessCharge.toFixed(2);
+
+    // 4. Final Totals
+    let totalPayable = baseRent + excessCharge;
+    document.getElementById("tcharge").value = totalPayable.toFixed(2);
+
+    let balance = totalPayable - deposit;
+    document.getElementById("bal").value = balance.toFixed(2);
+}
+
+// Event listeners
+document.getElementById("pread").addEventListener("input", calcAll);
+window.onload = calcAll;
+</script>
+</body>
+</html>

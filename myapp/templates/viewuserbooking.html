@@ -1,0 +1,87 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'viewfacility/fonts/icomoon/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'viewfacility/css/owl.carousel.min.css' %}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'viewfacility/css/bootstrap.min.css' %}">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="{% static 'viewfacility/css/style.css' %}">
+
+    <title>Table #3</title>
+  </head>
+
+  <body>
+  <center><a href="/up/">BACK</a></center>
+
+  <div class="content">
+
+    <div class="container">
+      <h2 class="mb-5">VIEW BOOKING DETAILS</h2>
+
+      <div class="table-responsive">
+
+        <table class="table custom-table">
+          <thead>
+            <tr>
+              <th scope="col">
+                <label class="control control--checkbox">
+                  <input type="checkbox" class="js-check-all"/>
+                  <div class="control__indicator"></div>
+                </label>
+              </th>
+              <th scope="col">Booking No</th>
+              <th scope="col">Booking Date</th>
+              <th scope="col">Car Image</th>
+              <th scope="col">Vehicle Name</th>
+              <th scope="col">Deposit Amount</th>
+              <th scope="col">rent paid</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+		   {% for j in rec %}
+            <tr>
+              <th scope="row">
+                <label class="control control--checkbox">
+                  <input type="checkbox"/>
+                  <div class="control__indicator"></div>
+                </label>
+              </th>
+              <td> {{j.bno}}</td>
+              <td>{{j.bdate}}</td>
+              <td><img src="/media/{{j.photo}}" width="250" height="250" /> </td>
+              <td>{{j.vname}}</td>
+              <td>{{j.sdepo}}</td>
+              <td>{{j.rday}}</td>
+              <td>{{j.status}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+              <div class="col-12 text-center">
+			     <a  href="/up/">Back</a>
+		      </div>
+
+    </div>
+
+  </div>
+
+
+
+    <script src="{% static 'viewfacility/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'viewfacility/js/popper.min.js' %}"></script>
+    <script src="{% static 'viewfacility/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'viewfacility/js/main.js' %}"></script>
+  </body>
+</html>

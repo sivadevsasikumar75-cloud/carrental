@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+{% load static %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Bootstrap Advance Admin Template</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="{% static 'af/assets/css/bootstrap.css' %}" rel="stylesheet" />
+    <!-- FONTAWESOME STYLES-->
+    <link href="{% static 'af/assets/css/font-awesome.css' %}" rel="stylesheet" />
+    <!--CUSTOM BASIC STYLES-->
+    <link href="{% static 'af/assets/css/basic.css' %}" rel="stylesheet" />
+    <!--CUSTOM MAIN STYLES-->
+    <link href="{% static 'af/assets/css/custom.css' %}" rel="stylesheet" />
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">ADMIN</a>
+            </div>
+
+            <div class="header-right">
+
+              <a href="message-task.html" class="btn btn-info" title="New Message"><b>30 </b><i class="fa fa-envelope-o fa-2x"></i></a>
+                <a href="message-task.html" class="btn btn-primary" title="New Task"><b>40 </b><i class="fa fa-bars fa-2x"></i></a>
+                <a href="/logout/" class="btn btn-danger" title="Logout"><i class="fa fa-exclamation-circle fa-2x"></i></a>
+
+
+            </div>
+        </nav>
+        <!-- /. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <div class="user-img-div">
+                            <img src="{% static 'af/assets/img/user.png' %}" class="img-thumbnail" />
+
+                            <div class="inner-text">
+                                 Welcome Admin
+                            <br />
+                                <small>Last Login : 2 Weeks Ago </small>
+                            </div>
+                        </div>
+
+                    </li>
+
+
+                    <li>
+                        <a class="active-menu" href="index.html"><i class="fa fa-dashboard "></i>Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="/adp/"><i class="fa fa-bicycle "></i>New Vehicles <span class="fa arrow"></span></a>
+                    </li>
+                    <li>
+                        <a href="/lms/"><i class="fa fa-flash "></i>List Vehicles</a>
+                    </li>
+                    <li>
+                        <a href="/lc/"><i class="fa fa-flash "></i>Our Customers</a>
+                    </li>
+                    <li>
+                        <a href="/abl/"><i class="fa fa-flash "></i>Rent Closing</a>
+                    </li>
+                       <li>
+                        <a href="/abh/"><i class="fa fa-yelp "></i>Booking History <span class="fa arrow"></span></a>
+                    </li>
+                    <li>
+                        <a href="/cp/"><i class="fa fa-sign-in "></i>Change Password</a>
+                    </li>
+                    <li>
+                        <a href="/logout/"><i class="fa fa-sign-in "></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line">NEW VEHICLE ENTRY FORM</h1>
+
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="panel panel-info">
+                        <div class="panel-body">
+                            <form role="form" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                        <div class="form-group">
+                                            <label>Vehicle No</label>
+                                            <input class="form-control" name="vno" type="text" value="{{vno}}" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Vehicle Name</label>
+                                            <input class="form-control" name="vname" type="text" value="{{vname}}" required>
+                                        </div>
+                                       <div class="form-group">
+                                            <label>Price</label>
+                                            <input class="form-control" type="text" name="vprice" value="{{vprice}}" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Color</label>
+                                            <select name="vcolor" class="form-control" required>
+                                                <option value="{{vcolor}}">{{vcolor}}</option>
+                                                <option value="White">White</option>
+                                                <option value="Black">Black</option>
+                                                <option value="silver">Silver</option>
+                                                <option value="Blue">Blue</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Fuel Type</label>
+                                            <select name="ftype" class="form-control" required>
+                                                <option value="{{ftype}}">{{ftype}}</option>
+                                                <option value="Petrol">Petrol</option>
+                                                <option value="Desiel">Desiel</option>
+                                                <option value="CNG">CNG</option>
+                                                <option value="Electric">Electric</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Seating Capacity</label>
+                                            <input class="form-control" type="number" name="scapacity" value="{{scapacity}}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Rent Per Day</label>
+                                            <input class="form-control" type="number" name="rday"  value="{{rday}}" required>
+                                        </div>
+                                         <div class="form-group">
+                                            <label>GPS Phone No</label>
+                                            <input class="form-control" type="text" name="gps_ph" value="{{gps_ph}}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Maximum Killometer Per day</label>
+                                            <input class="form-control" type="text" name="max_km"  value="{{max_km}}" required>
+                                        </div>
+                                       <div class="form-group">
+                                            <label>Excess Charge</label>
+                                            <input class="form-control" type="text" name="echarge" value="{{echarge}}" required>
+                                        </div>
+                                       <div class="form-group">
+                                            <label>Deposit Required</label>
+                                            <input class="form-control" type="number" name="sdepo" value="{{sdepo}}" required>
+                                        </div>
+                                       <div class="form-group">
+                                            <label>Features</label>
+                                           <textarea  rows="5" class="form-control" name="features"   required>{{features}}</textarea>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-info">SUBMIT </button>
+                                    </form>
+                            </div>
+                        </div>
+            </div>
+
+        </div>
+             <!--/.ROW-->
+      </div>
+            <!-- /. PAGE INNER  -->
+    </div>
+        <!-- /. PAGE WRAPPER  -->
+    </div>
+    <!-- /. WRAPPER  -->
+    <div id="footer-sec">
+        &copy; 2014 YourCompany | Design By : <a href="http://www.binarytheme.com/" target="_blank">BinaryTheme.com</a>
+    </div>
+    <!-- /. FOOTER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- JQUERY SCRIPTS -->
+    <script src="{% static 'af/assets/js/jquery-1.10.2.js' %}"></script>
+    <!-- BOOTSTRAP SCRIPTS -->
+    <script src="{% static 'af/assets/js/bootstrap.js' %}"></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src="{% static 'af/assets/js/jquery.metisMenu.js' %}"></script>
+    <!-- CUSTOM SCRIPTS -->
+    <script src="{% static 'af/assets/js/custom.js' %}"></script>
+
+
+</body>
+</html>
