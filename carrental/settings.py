@@ -6,11 +6,17 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
-DEBUG = os.environ.get("DEBUG", "True").strip().lower() in {"1", "true", "yes", "on"}
+DEBUG = os.environ.get("DEBUG", "True").strip().lower() in {
+    "1", "true", "yes", "on"
+}
+
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+
 if not SECRET_KEY:
     if not DEBUG:
-        raise ImproperlyConfigured("Set DJANGO_SECRET_KEY when DEBUG is disabled.")
+        raise ImproperlyConfigured(
+            "Set DJANGO_SECRET_KEY when DEBUG is disabled."
+        )
     SECRET_KEY = "django-insecure-local-development-only"
 
 # Hosts
@@ -22,8 +28,9 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
-# Render provides this variable automatically
+# Render hostname
 render_hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+
 if render_hostname and render_hostname not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(render_hostname)
 
@@ -70,6 +77,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'carrental.wsgi.application'
 
+# Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -123,14 +131,28 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # HTTPS and CSRF settings for production
 if not DEBUG:
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_PROXY_SSL_HEADER = (
+        'HTTP_X_FORWARDED_PROTO',
+        'https'
+    )
+
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
+    # Read trusted origins from Vercel environment variables
+    CSRF_TRUSTED_ORIGINS = [
+        origin.strip()
+        for origin in os.environ.get(
+            "CSRF_TRUSTED_ORIGINS", ""
+        ).split(",")
+        if origin.strip()
+    ]
+
+    # Keep Render support
     if render_hostname:
-        CSRF_TRUSTED_ORIGINS = [
+        CSRF_TRUSTED_ORIGINS.append(
             f"https://{render_hostname}"
-        ]
+        )
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
