@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+{% load static %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Trip Closing</title>
+
+    <link href="{% static 'af/assets/css/bootstrap.css' %}" rel="stylesheet" />
+    <link href="{% static 'af/assets/css/font-awesome.css' %}" rel="stylesheet" />
+    <link href="{% static 'af/assets/css/basic.css' %}" rel="stylesheet" />
+    <link href="{% static 'af/assets/css/custom.css' %}" rel="stylesheet" />
+</head>
+
+<body>
+<div id="wrapper">
+
+    <!-- TOP NAV -->
+    <nav class="navbar navbar-default navbar-cls-top">
+        <div class="navbar-header">
+            <a class="navbar-brand">ADMIN PAGE</a>
+        </div>
+        <div class="header-right">
+            <a href="/logout/" class="btn btn-danger">Logout</a>
+        </div>
+    </nav>
+
+    <!-- SIDE NAV -->
+    <nav class="navbar-default navbar-side">
+        <div class="sidebar-collapse">
+            <ul class="nav">
+                <li><a href="/adp/">New Vehicles</a></li>
+                <li><a href="/lms/">List Vehicles</a></li>
+                <li><a href="/lc/">Our Customers</a></li>
+                <li><a class="active-menu" href="/abl/">Trip Closing</a></li>
+                <li><a href="/abh/">Booking History</a></li>
+                <li><a href="/cp/">Change Password</a></li>
+                <li><a href="/logout/">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- PAGE CONTENT -->
+    <div id="page-wrapper">
+        <div id="page-inner">
+
+            <h1 class="page-head-line">TRIP CLOSING</h1>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Booking List</div>
+
+                <div class="panel-body">
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Booking No</th>
+                                    <th>Booking Date</th>
+                                    <th>Customer</th>
+                                    <th>Vehicle Name</th>
+                                    <th>Vehicle</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for j in rec %}
+                                <tr>
+                                    <td>{{ j.bno }}</td>
+                                    <td>{{ j.bdate }}</td>
+
+                                    <!-- ✅ ForeignKey -->
+                                    <td>{{ j.user.fname }}</td>
+                                    <td>{{ j.vehicle.vname }}</td>
+
+                                    <td>
+                                        <img src="{{ j.vehicle.photo.url }}" width="120">
+                                    </td>
+
+                                    <td>{{ j.sdepo }}</td>
+                                    <td>{{ j.status }}</td>
+
+                                    <!-- ✅ FIXED URL -->
+                                    <td>
+                                        <a href="/arr/{{ j.bno }}/" class="btn btn-success">
+                                            Rent Closing
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="{% static 'af/assets/js/jquery-1.10.2.js' %}"></script>
+<script src="{% static 'af/assets/js/bootstrap.js' %}"></script>
+<script src="{% static 'af/assets/js/custom.js' %}"></script>
+
+</body>
+</html>

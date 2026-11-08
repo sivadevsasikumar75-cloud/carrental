@@ -1,0 +1,202 @@
+<!doctype html>
+{% load static %}
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <script>
+        window.history.forward();
+        function noBack(){ window.history.forward(); }
+        window.onload = noBack;
+        window.onpageshow = function(evt){ if(evt.persisted) noBack(); };
+    </script>
+
+    <title>CarVilla | Premium Rentals</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,600,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'hpg/assets/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'hpg/assets/css/linearicons.css' %}">
+    <link rel="stylesheet" href="{% static 'hpg/assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'hpg/assets/css/bootsnav.css' %}">
+    <link rel="stylesheet" href="{% static 'hpg/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'hpg/assets/css/responsive.css' %}">
+
+    <style>
+        /* --- CUSTOM PREMIUM STYLES --- */
+
+        /* Hero Section */
+        .welcome-hero {
+            background: url("{% static 'hpg/assets/images/welcome-hero/welcome-banner.jpg' %}") no-repeat center center/cover;
+            position: relative;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .welcome-hero:before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4));
+        }
+
+        .welcome-hero-txt { position: relative; z-index: 5; color: #fff; text-align: center; width: 100%; }
+
+        /* Car Section */
+        .featured-cars {
+            padding: 80px 0;
+            background: #f3f7f9;
+        }
+
+        .single-featured-cars {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        /* 🔥 IMAGE RESIZING LOGIC */
+        .featured-img-box {
+            position: relative;
+            overflow: hidden;
+            height: 180px; /* Reduced height for a sleeker look */
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .featured-cars-img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .featured-cars-img img {
+            width: 100%;
+            height: 100%;
+            /* Use 'contain' if you want to see the whole car without cropping */
+            /* Use 'cover' if you want the image to fill the whole 180px box */
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .single-featured-cars:hover .featured-cars-img img {
+            transform: scale(1.08);
+        }
+
+        /* Rent Now Overlay */
+        .featured-img-box a {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(78, 94, 251, 0.9);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            opacity: 0;
+            transition: 0.3s;
+            text-decoration: none;
+            z-index: 10;
+        }
+
+        .featured-img-box:hover a { opacity: 1; }
+
+        /* Card Content */
+        .featured-cars-txt { padding: 20px; text-align: center; }
+        .featured-cars-txt h2 { font-size: 18px; font-weight: 600; margin-bottom: 5px; color: #333; }
+        .featured-cars-txt h3 { color: #4e5efb; font-weight: 700; margin-bottom: 10px; font-size: 16px; }
+        .featured-cars-txt p { font-size: 12px; color: #777; margin: 2px 0; }
+
+        .spec-icon { color: #4e5efb; margin-right: 5px; width: 15px; }
+
+        .navbar-brand { font-weight: 700; color: #4e5efb !important; }
+        .navbar-brand span { font-size: 12px; color: #777; font-weight: 400; margin-left: 10px; }
+    </style>
+</head>
+
+<body>
+
+    <section id="home" class="welcome-hero">
+        <div class="top-area">
+            <div class="header-area">
+                <nav class="navbar navbar-default bootsnav navbar-sticky navbar-scrollspy">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <a class="navbar-brand">CARVILLA <span>Welcome, {{name}}</span></a>
+                        </div>
+                        <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="#featured-cars">Book Now</a></li>
+                                <li><a href="/uvb/">Status</a></li>
+                                <li><a href="/cp/">Password</a></li>
+                                <li><a href="/logout/">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="welcome-hero-txt">
+                <h2>Get Your Desired Car For Daily Rent</h2>
+                <p>Reliable, affordable, and hassle-free daily rental service.</p>
+                <button class="welcome-btn" onclick="window.location.href='#featured-cars'">Explore Fleet</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="featured-cars" class="featured-cars">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 style="font-weight: 700; margin-bottom: 40px;">Our Premium Fleet</h2>
+            </div>
+
+            <div class="featured-cars-content">
+                <div class="row">
+                    {% for j in crec %}
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="single-featured-cars">
+                            <div class="featured-img-box">
+                                <a href="/bnow/{{j.id}}/">RENT NOW</a>
+                                <div class="featured-cars-img">
+                                    <img src="{{j.photo.url}}" alt="{{j.vname}}">
+                                </div>
+                            </div>
+                            <div class="featured-cars-txt">
+                                <h2>{{j.vname}}</h2>
+                                <h3>₹{{j.rday}} <small style="color:#777; font-weight:400;">/ day</small></h3>
+                                <p><i class="fa fa-users spec-icon"></i> {{j.scapacity}} Seats</p>
+                                <p><i class="fa fa-tint spec-icon"></i> {{j.ftype}}</p>
+                                <p><i class="fa fa-paint-brush spec-icon"></i> {{j.vcolor}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'hpg/assets/js/jquery.js' %}"></script>
+    <script src="{% static 'hpg/assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'hpg/assets/js/bootsnav.js' %}"></script>
+    <script src="{% static 'hpg/assets/js/custom.js' %}"></script>
+
+</body>
+</html>
