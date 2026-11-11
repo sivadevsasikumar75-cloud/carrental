@@ -5,5 +5,16 @@ __pycache__/
 *.pyc
 db.sqlite3
 .env
+.env.local
 staticfiles/
 media/
+
+# Local database backups and exported data
+db_backup.sqlite3
+sqlite_data.json
+sqlite_data_utf8.json
+
+# Local database backups and exported data
+db_backup.sqlite3
+sqlite_data.json
+sqlite_data_utf8.json

@@ -2,6 +2,7 @@
 from pathlib import Path
 import os
 from django.core.exceptions import ImproperlyConfigured
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -82,12 +83,22 @@ TEMPLATES = [
 WSGI_APPLICATION = 'carrental.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+database_url = os.environ.get("DATABASE_URL")
+
+if database_url:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            database_url,
+            ssl_require=True,
+        )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -125,7 +136,7 @@ STORAGES = {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 

@@ -6,7 +6,7 @@ class userreg(models.Model):
     fname = models.CharField(max_length=50)
     adds = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
-    ph_no = models.CharField(max_length=10)
+    ph_no = models.CharField(max_length=15)
     dob = models.DateField()
     adhno = models.ImageField(upload_to='images/')
     dls = models.ImageField(upload_to='images/')
@@ -78,5 +78,5 @@ class newbooking(models.Model):
 
 class feedback(models.Model):
     name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=10)
+    phone = models.CharField(max_length=15)
     feed = models.CharField(max_length=250)
