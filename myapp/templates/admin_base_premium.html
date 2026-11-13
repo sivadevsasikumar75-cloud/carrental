@@ -1,0 +1,712 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Executive Fleet Operations | Weekend Car Rentals{% endblock %}</title>
+
+    <!-- Cache prevention for sensitive admin console -->
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <script>
+        window.history.forward();
+        function noBack() { window.history.forward(); }
+        window.onload = noBack;
+        window.onpageshow = function(evt) { if (evt.persisted) noBack(); };
+    </script>
+
+    <!-- Google Fonts for Luxury Automotive Hierarchy -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Rufina:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Core FontAwesome & Bootstrap (v3.3.6 compatible) -->
+    <link href="{% static 'af/assets/css/bootstrap.css' %}" rel="stylesheet" />
+    <link href="{% static 'af/assets/css/font-awesome.css' %}" rel="stylesheet" />
+
+    <!-- Shared Premium Design System -->
+    <link href="{% static 'css/premium.css' %}" rel="stylesheet" />
+
+    <style>
+        /* =====================================================================
+           ADMIN CONSOLE LUXURY STYLING - WEEKEND CAR RENTALS
+           Palette:
+             Deep Navy:     #101C2C
+             Dark Charcoal: #202832
+             Charcoal Dark: #161D26
+             Ivory Base:    #F7F5EF
+             White:         #FFFFFF
+             Muted Gold:    #C5A46D
+             Soft Grey:     #AAB4C3
+           ===================================================================== */
+        body {
+            background-color: #F7F5EF;
+            font-family: 'Poppins', sans-serif;
+            color: #202832;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        #admin-wrapper {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Executive Header */
+        .admin-top-nav {
+            background-color: #101C2C;
+            border-bottom: 2px solid #C5A46D;
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        }
+
+        .admin-brand {
+            font-family: 'Rufina', Georgia, serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: 2px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-brand:hover, .admin-brand:focus {
+            color: #C5A46D;
+            text-decoration: none;
+        }
+
+        .admin-brand span {
+            color: #C5A46D;
+        }
+
+        .admin-brand small {
+            font-family: 'Poppins', sans-serif;
+            font-size: 11px;
+            color: #AAB4C3;
+            letter-spacing: 1px;
+            font-weight: 400;
+            padding-left: 8px;
+            border-left: 1px solid rgba(197, 164, 109, 0.4);
+        }
+
+        .admin-top-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-admin-portal-link {
+            background: rgba(197, 164, 109, 0.15);
+            border: 1px solid rgba(197, 164, 109, 0.5);
+            color: #C5A46D;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-admin-portal-link:hover {
+            background: #C5A46D;
+            color: #101C2C;
+            text-decoration: none;
+        }
+
+        .btn-admin-logout {
+            background: transparent;
+            border: 1px solid rgba(217, 83, 79, 0.6);
+            color: #ff8583;
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-admin-logout:hover {
+            background: #d9534f;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .mobile-sidebar-toggle {
+            display: none;
+            background: transparent;
+            border: 1px solid #C5A46D;
+            color: #C5A46D;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        /* Main Workspace Layout */
+        .admin-workspace {
+            display: flex;
+            flex-grow: 1;
+            position: relative;
+        }
+
+        /* Sidebar Styling */
+        .admin-sidebar {
+            width: 260px;
+            background-color: #161D26;
+            border-right: 1px solid rgba(197, 164, 109, 0.2);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .admin-user-profile {
+            padding: 24px 20px;
+            background-color: #101C2C;
+            border-bottom: 1px solid rgba(197, 164, 109, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .admin-avatar-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #202832;
+            border: 1.5px solid #C5A46D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #C5A46D;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .admin-user-info h4 {
+            color: #FFFFFF;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 0 2px;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-user-info span {
+            color: #C5A46D;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .admin-menu-list {
+            list-style: none;
+            padding: 15px 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .admin-menu-category {
+            padding: 12px 22px 6px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #718296;
+        }
+
+        .admin-menu-list li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 22px;
+            color: #AAB4C3;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            border-left: 3px solid transparent;
+            transition: all 0.25s ease;
+        }
+
+        .admin-menu-list li a i {
+            width: 18px;
+            font-size: 15px;
+            color: #718296;
+            transition: all 0.25s ease;
+        }
+
+        .admin-menu-list li a:hover {
+            color: #FFFFFF;
+            background-color: rgba(197, 164, 109, 0.08);
+            border-left-color: #C5A46D;
+        }
+
+        .admin-menu-list li a:hover i {
+            color: #C5A46D;
+        }
+
+        .admin-menu-list li.active a {
+            color: #FFFFFF;
+            background-color: rgba(197, 164, 109, 0.12);
+            border-left-color: #C5A46D;
+            font-weight: 600;
+        }
+
+        .admin-menu-list li.active a i {
+            color: #C5A46D;
+        }
+
+        /* Admin Content Area */
+        .admin-content-viewport {
+            flex-grow: 1;
+            padding: 35px 35px 50px;
+            background-color: #F7F5EF;
+            min-width: 0; /* Prevents overflow flex bug */
+        }
+
+        .admin-page-header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #E4E1D8;
+            padding-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .admin-page-title {
+            font-family: 'Rufina', Georgia, serif;
+            font-size: 28px;
+            color: #101C2C;
+            margin: 0 0 4px;
+            font-weight: 700;
+        }
+
+        .admin-page-subtitle {
+            font-size: 13px;
+            color: #6C7A89;
+            margin: 0;
+        }
+
+        /* KPI / Metric Cards */
+        .admin-kpi-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(16, 28, 44, 0.08);
+            border-radius: 4px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(16, 28, 44, 0.05);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(16, 28, 44, 0.1);
+            border-color: rgba(197, 164, 109, 0.4);
+        }
+
+        .admin-kpi-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #C5A46D;
+        }
+
+        .kpi-icon-badge {
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
+            background: rgba(197, 164, 109, 0.12);
+            color: #C5A46D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            float: right;
+        }
+
+        .kpi-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #718296;
+            margin-bottom: 6px;
+        }
+
+        .kpi-value {
+            font-family: 'Rufina', Georgia, serif;
+            font-size: 30px;
+            font-weight: 700;
+            color: #101C2C;
+            margin: 0 0 6px;
+            line-height: 1;
+        }
+
+        .kpi-subtext {
+            font-size: 12px;
+            color: #718296;
+            margin: 0;
+        }
+
+        /* Admin Panels & Tables */
+        .admin-panel {
+            background: #FFFFFF;
+            border: 1px solid rgba(16, 28, 44, 0.08);
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(16, 28, 44, 0.05);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .admin-panel-heading {
+            padding: 18px 24px;
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #EFECE4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .admin-panel-title {
+            font-family: 'Rufina', Georgia, serif;
+            font-size: 18px;
+            color: #101C2C;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-panel-title i {
+            color: #C5A46D;
+        }
+
+        .admin-panel-body {
+            padding: 24px;
+        }
+
+        /* Tables */
+        .admin-table {
+            width: 100%;
+            margin-bottom: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .admin-table thead th {
+            background-color: #101C2C;
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 12px 16px;
+            border: none !important;
+        }
+
+        .admin-table tbody td {
+            padding: 14px 16px;
+            font-size: 13px;
+            color: #202832;
+            vertical-align: middle;
+            border-top: 1px solid #EFECE4 !important;
+        }
+
+        .admin-table tbody tr:hover td {
+            background-color: #FAF8F4;
+        }
+
+        /* Status Pills */
+        .status-pill {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 20px;
+        }
+
+        .status-free {
+            background-color: rgba(46, 125, 50, 0.12);
+            color: #2e7d32;
+            border: 1px solid rgba(46, 125, 50, 0.3);
+        }
+
+        .status-on-rent {
+            background-color: rgba(197, 164, 109, 0.15);
+            color: #9c7b41;
+            border: 1px solid rgba(197, 164, 109, 0.4);
+        }
+
+        .status-closed {
+            background-color: rgba(85, 98, 112, 0.12);
+            color: #556270;
+            border: 1px solid rgba(85, 98, 112, 0.3);
+        }
+
+        /* Custom Buttons */
+        .btn-gold-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #C5A46D;
+            color: #101C2C;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-gold-action:hover, .btn-gold-action:focus {
+            background-color: #101C2C;
+            color: #C5A46D;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(16, 28, 44, 0.2);
+        }
+
+        .btn-navy-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #101C2C;
+            color: #FFFFFF;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: 1px solid #101C2C;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-navy-action:hover, .btn-navy-action:focus {
+            background-color: #C5A46D;
+            border-color: #C5A46D;
+            color: #101C2C;
+            text-decoration: none;
+        }
+
+        .btn-danger-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background-color: transparent;
+            color: #d9534f;
+            border: 1px solid rgba(217, 83, 79, 0.4);
+            padding: 5px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 3px;
+            transition: all 0.25s ease;
+        }
+
+        .btn-danger-action:hover {
+            background-color: #d9534f;
+            color: #FFFFFF;
+            border-color: #d9534f;
+        }
+
+        .btn-edit-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background-color: transparent;
+            color: #101C2C;
+            border: 1px solid rgba(16, 28, 44, 0.25);
+            padding: 5px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 3px;
+            transition: all 0.25s ease;
+        }
+
+        .btn-edit-action:hover {
+            background-color: #101C2C;
+            color: #C5A46D;
+            border-color: #101C2C;
+        }
+
+        /* Admin Footer */
+        .admin-footer-bar {
+            background-color: #101C2C;
+            border-top: 1px solid rgba(197, 164, 109, 0.25);
+            padding: 16px 30px;
+            color: #718296;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .admin-footer-bar a {
+            color: #C5A46D;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 991px) {
+            .mobile-sidebar-toggle {
+                display: block;
+            }
+            .admin-sidebar {
+                position: fixed;
+                top: 60px;
+                left: -260px;
+                bottom: 0;
+                z-index: 1020;
+                overflow-y: auto;
+            }
+            .admin-sidebar.sidebar-open {
+                left: 0;
+                box-shadow: 4px 0 25px rgba(0,0,0,0.5);
+            }
+            .admin-content-viewport {
+                padding: 20px;
+            }
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div id="admin-wrapper">
+        <!-- Executive Top Navigation Bar -->
+        <header class="admin-top-nav">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button type="button" class="mobile-sidebar-toggle" id="toggleSidebarBtn">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="admin-brand" href="{% url 'adminpage' %}">
+                    <span>WEEKEND</span> CARS <small>EXECUTIVE DESK</small>
+                </a>
+            </div>
+
+            <div class="admin-top-actions">
+                <a href="{% url 'home' %}" class="btn-admin-portal-link" target="_blank" title="View Public Portal">
+                    <i class="fa fa-external-link"></i> Public Site
+                </a>
+                <a href="{% url 'logout' %}" class="btn-admin-logout" title="End Session">
+                    <i class="fa fa-sign-out"></i> Logout
+                </a>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <div class="admin-workspace">
+            <!-- Sidebar Navigation -->
+            <aside class="admin-sidebar" id="adminSidebar">
+                <div class="admin-user-profile">
+                    <div class="admin-avatar-badge">
+                        {{ request.session.name|slice:":1"|upper|default:"A" }}
+                    </div>
+                    <div class="admin-user-info">
+                        <h4>{{ request.session.name|default:"Administrator" }}</h4>
+                        <span>Master Operator</span>
+                    </div>
+                </div>
+
+                <ul class="admin-menu-list">
+                    <li class="admin-menu-category">Command Center</li>
+                    <li class="{% block nav_dash %}{% endblock %}">
+                        <a href="{% url 'adminpage' %}">
+                            <i class="fa fa-tachometer"></i> Dashboard Overview
+                        </a>
+                    </li>
+
+                    <li class="admin-menu-category">Fleet Asset Management</li>
+                    <li class="{% block nav_add_vehicle %}{% endblock %}">
+                        <a href="{% url 'addvehicle' %}">
+                            <i class="fa fa-plus-circle"></i> Register New Vehicle
+                        </a>
+                    </li>
+                    <li class="{% block nav_list_vehicle %}{% endblock %}">
+                        <a href="{% url 'listvehicle' %}">
+                            <i class="fa fa-car"></i> Fleet Inventory & Rates
+                        </a>
+                    </li>
+
+                    <li class="admin-menu-category">Rental Operations</li>
+                    <li class="{% block nav_active_rentals %}{% endblock %}">
+                        <a href="{% url 'adminviewbooking' %}">
+                            <i class="fa fa-key"></i> Active Rentals & Check-In
+                        </a>
+                    </li>
+                    <li class="{% block nav_booking_history %}{% endblock %}">
+                        <a href="{% url 'adminbookinghistory' %}">
+                            <i class="fa fa-history"></i> Completed Rental Ledger
+                        </a>
+                    </li>
+
+                    <li class="admin-menu-category">Client Governance</li>
+                    <li class="{% block nav_customers %}{% endblock %}">
+                        <a href="{% url 'ourcustomers' %}">
+                            <i class="fa fa-users"></i> Client Identity Records
+                        </a>
+                    </li>
+                    <li class="{% block nav_password %}{% endblock %}">
+                        <a href="{% url 'changepword' %}">
+                            <i class="fa fa-lock"></i> Security Credentials
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- Main Content Viewport -->
+            <main class="admin-content-viewport">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+
+        <!-- Executive Footer -->
+        <footer class="admin-footer-bar">
+            <div>
+                &copy; {% now "Y" %} <span style="color:#C5A46D;">Weekend Car Rentals</span> &bull; Executive Fleet Control Console
+            </div>
+            <div>
+                <span class="fa fa-shield text-muted" style="color: #C5A46D;"></span> Protected Master Session
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static 'af/assets/js/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'af/assets/js/bootstrap.js' %}"></script>
+    <script>
+        // Mobile sidebar toggle handler
+        document.getElementById('toggleSidebarBtn').addEventListener('click', function() {
+            document.getElementById('adminSidebar').classList.toggle('sidebar-open');
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

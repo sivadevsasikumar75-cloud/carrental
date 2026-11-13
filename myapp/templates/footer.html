@@ -1,0 +1,75 @@
+{% load static %}
+<footer class="footer-premium" id="footer-contact">
+  <div class="footer-top-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 col-sm-6">
+          <div class="footer-brand-box">
+            <h3 class="footer-logo"><span class="gold-text">WEEKEND</span> CAR RENTALS</h3>
+            <p class="footer-tagline">
+              Curating exceptional classic, luxury, and premium vehicles for the discerning driver. Experience timeless elegance and unmatched performance on every journey.
+            </p>
+            <div class="footer-social-links">
+              <a href="#home" title="Instagram"><i class="fa fa-instagram"></i></a>
+              <a href="#home" title="Facebook"><i class="fa fa-facebook"></i></a>
+              <a href="#home" title="Twitter"><i class="fa fa-twitter"></i></a>
+              <a href="#home" title="LinkedIn"><i class="fa fa-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+          <div class="footer-links-box">
+            <h4 class="footer-heading">Quick Navigation</h4>
+            <ul class="footer-nav-list">
+              <li><a href="#home"><i class="fa fa-angle-right"></i> Home</a></li>
+              <li><a href="#browse-cars"><i class="fa fa-angle-right"></i> Fleet Collection</a></li>
+              <li><a href="#featured-cars"><i class="fa fa-angle-right"></i> Featured Vehicles</a></li>
+              <li><a href="#why-choose-us"><i class="fa fa-angle-right"></i> Why Choose Us</a></li>
+              <li><a href="#about-us"><i class="fa fa-angle-right"></i> About Our Heritage</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-md-2 col-sm-6">
+          <div class="footer-links-box">
+            <h4 class="footer-heading">Member Portal</h4>
+            <ul class="footer-nav-list">
+              {% if request.session.id %}
+                {% if request.session.rights == 'A' %}
+                  <li><a href="{% url 'adminpage' %}"><i class="fa fa-angle-right"></i> Admin Desk</a></li>
+                {% else %}
+                  <li><a href="{% url 'userpage' %}"><i class="fa fa-angle-right"></i> Client Dashboard</a></li>
+                {% endif %}
+                <li><a href="{% url 'logout' %}"><i class="fa fa-angle-right"></i> Logout</a></li>
+              {% else %}
+                <li><a href="{% url 'login' %}"><i class="fa fa-angle-right"></i> Client Login</a></li>
+                <li><a href="{% url 'adduserreg' %}"><i class="fa fa-angle-right"></i> Register Account</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+          <div class="footer-links-box">
+            <h4 class="footer-heading">Concierge & Inquiries</h4>
+            <div class="footer-contact-details">
+              <p><i class="fa fa-phone gold-text"></i> +91 97474 08160</p>
+              <p><i class="fa fa-envelope-o gold-text"></i> concierge@weekendcarrentals.com</p>
+              <p><i class="fa fa-map-marker gold-text"></i> Prestige Heritage Boulevard, High Street</p>
+              <p class="service-hours"><i class="fa fa-clock-o gold-text"></i> 24/7 Dedicated Support</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom-bar">
+    <div class="container text-center">
+      <p class="copyright-text">
+        &copy; {% now "Y" %} <span class="gold-text">Weekend Car Rentals</span>. All rights reserved. Handcrafted for automotive enthusiasts.
+      </p>
+    </div>
+  </div>
+</footer>

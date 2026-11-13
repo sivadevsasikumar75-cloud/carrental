@@ -1,112 +1,104 @@
-<!DOCTYPE html>
+{% extends "admin_base_premium.html" %}
 {% load static %}
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - Trip Closing</title>
 
-    <link href="{% static 'af/assets/css/bootstrap.css' %}" rel="stylesheet" />
-    <link href="{% static 'af/assets/css/font-awesome.css' %}" rel="stylesheet" />
-    <link href="{% static 'af/assets/css/basic.css' %}" rel="stylesheet" />
-    <link href="{% static 'af/assets/css/custom.css' %}" rel="stylesheet" />
-</head>
+{% block title %}Active Rentals & Check-In Desk | Weekend Car Rentals Admin{% endblock %}
+{% block nav_active_rentals %}active{% endblock %}
 
-<body>
-<div id="wrapper">
+{% block extra_head %}
+<style>
+    .booking-vehicle-thumb {
+        width: 100px;
+        height: 65px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid #EFECE4;
+    }
+</style>
+{% endblock %}
 
-    <!-- TOP NAV -->
-    <nav class="navbar navbar-default navbar-cls-top">
-        <div class="navbar-header">
-            <a class="navbar-brand">ADMIN PAGE</a>
-        </div>
-        <div class="header-right">
-            <a href="/logout/" class="btn btn-danger">Logout</a>
-        </div>
-    </nav>
-
-    <!-- SIDE NAV -->
-    <nav class="navbar-default navbar-side">
-        <div class="sidebar-collapse">
-            <ul class="nav">
-                <li><a href="/adp/">New Vehicles</a></li>
-                <li><a href="/lms/">List Vehicles</a></li>
-                <li><a href="/lc/">Our Customers</a></li>
-                <li><a class="active-menu" href="/abl/">Trip Closing</a></li>
-                <li><a href="/abh/">Booking History</a></li>
-                <li><a href="/cp/">Change Password</a></li>
-                <li><a href="/logout/">Logout</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- PAGE CONTENT -->
-    <div id="page-wrapper">
-        <div id="page-inner">
-
-            <h1 class="page-head-line">TRIP CLOSING</h1>
-
-            <div class="panel panel-default">
-                <div class="panel-heading">Booking List</div>
-
-                <div class="panel-body">
-                    <div class="table-responsive">
-
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Booking No</th>
-                                    <th>Booking Date</th>
-                                    <th>Customer</th>
-                                    <th>Vehicle Name</th>
-                                    <th>Vehicle</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {% for j in rec %}
-                                <tr>
-                                    <td>{{ j.bno }}</td>
-                                    <td>{{ j.bdate }}</td>
-
-                                    <!-- ✅ ForeignKey -->
-                                    <td>{{ j.user.fname }}</td>
-                                    <td>{{ j.vehicle.vname }}</td>
-
-                                    <td>
-                                        <img src="{{ j.vehicle.photo.url }}" width="120">
-                                    </td>
-
-                                    <td>{{ j.sdepo }}</td>
-                                    <td>{{ j.status }}</td>
-
-                                    <!-- ✅ FIXED URL -->
-                                    <td>
-                                        <a href="/arr/{{ j.bno }}/" class="btn btn-success">
-                                            Rent Closing
-                                        </a>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-
-                        </table>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
+{% block content %}
+<div class="admin-page-header">
+    <div>
+        <h1 class="admin-page-title">Active Rentals Check-In Desk</h1>
+        <p class="admin-page-subtitle">Vehicles currently out on journey with clients. Initiate trip returns, log closing odometer readings, and reconcile security deposits.</p>
     </div>
-
+    <div>
+        <span class="status-pill status-on-rent" style="padding: 8px 16px; font-size: 12px;">
+            <i class="fa fa-key"></i> {{ rec|length }} Vehicles Currently On Rent
+        </span>
+    </div>
 </div>
 
-<script src="{% static 'af/assets/js/jquery-1.10.2.js' %}"></script>
-<script src="{% static 'af/assets/js/bootstrap.js' %}"></script>
-<script src="{% static 'af/assets/js/custom.js' %}"></script>
+<div class="admin-panel">
+    <div class="admin-panel-heading">
+        <h3 class="admin-panel-title">
+            <i class="fa fa-road"></i> Out on Journey Roster
+        </h3>
+        <span class="status-pill status-on-rent">Active Dispatches</span>
+    </div>
 
-</body>
-</html>
+    <div class="table-responsive">
+        <table class="table admin-table">
+            <thead>
+                <tr>
+                    <th style="width: 110px;">Booking #</th>
+                    <th>Booking Date</th>
+                    <th>Client Name</th>
+                    <th>Vehicle Details</th>
+                    <th>Visual</th>
+                    <th>Security Deposit</th>
+                    <th>Current Status</th>
+                    <th style="text-align: right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for j in rec %}
+                <tr>
+                    <td>
+                        <strong style="color: #101C2C; font-size: 14px;">#{{ j.bno }}</strong>
+                    </td>
+                    <td>
+                        <i class="fa fa-calendar" style="color: #C5A46D;"></i> {{ j.bdate }}
+                    </td>
+                    <td>
+                        <strong style="color: #101C2C;">{{ j.user.fname }}</strong><br>
+                        <small style="color: #718296;"><i class="fa fa-phone"></i> {{ j.user.ph_no }}</small>
+                    </td>
+                    <td>
+                        <strong style="color: #101C2C;">{{ j.vehicle.vname }}</strong><br>
+                        <small style="color: #718296;"><i class="fa fa-id-badge"></i> {{ j.vehicle.vno }}</small>
+                    </td>
+                    <td>
+                        {% if j.vehicle.photo %}
+                            <img src="{{ j.vehicle.photo.url }}" class="booking-vehicle-thumb" alt="{{ j.vehicle.vname }}">
+                        {% else %}
+                            <img src="{% static 'hback/assets/images/featured-cars/fc1.png' %}" class="booking-vehicle-thumb" alt="{{ j.vehicle.vname }}">
+                        {% endif %}
+                    </td>
+                    <td>
+                        <strong style="color: #101C2C; font-size: 14px;">₹{{ j.sdepo }}</strong>
+                        <small style="display: block; color: #718296;">Paid via Card</small>
+                    </td>
+                    <td>
+                        <span class="status-pill status-on-rent">{{ j.status }}</span>
+                    </td>
+                    <td style="text-align: right;">
+                        <a href="{% url 'arrivals' j.bno %}" class="btn-gold-action" style="padding: 7px 14px;">
+                            <i class="fa fa-calculator"></i> Rent Closing
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center" style="padding: 50px; color: #718296;">
+                        <i class="fa fa-check-circle-o" style="font-size: 36px; color: #2e7d32; margin-bottom: 12px; display: block;"></i>
+                        <h4 style="color: #101C2C; margin: 0 0 6px;">No Active Dispatches</h4>
+                        <p style="font-size: 13px; color: #718296; margin: 0;">All rental vehicles are safely returned and checked into the fleet inventory.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

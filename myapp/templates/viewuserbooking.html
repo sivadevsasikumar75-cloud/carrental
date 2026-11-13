@@ -1,87 +1,151 @@
-<!doctype html>
+{% extends "base_premium.html" %}
 {% load static %}
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{% static 'viewfacility/fonts/icomoon/style.css' %}">
+{% block title %}My Booking Ledger & Status | Weekend Car Rentals{% endblock %}
 
-    <link rel="stylesheet" href="{% static 'viewfacility/css/owl.carousel.min.css' %}">
+{% block extra_head %}
+<style>
+    .booking-history-section {
+        padding: 55px 0 80px;
+        background-color: #F7F5EF;
+        min-height: calc(100vh - 250px);
+    }
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'viewfacility/css/bootstrap.min.css' %}">
+    .booking-history-card {
+        background: #FFFFFF;
+        border: 1px solid rgba(16, 28, 44, 0.08);
+        border-radius: 4px;
+        box-shadow: 0 4px 20px rgba(16, 28, 44, 0.05);
+        overflow: hidden;
+    }
 
-    <!-- Style -->
-    <link rel="stylesheet" href="{% static 'viewfacility/css/style.css' %}">
+    .history-vehicle-thumb {
+        width: 100px;
+        height: 65px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid #EFECE4;
+        margin-right: 15px;
+    }
 
-    <title>Table #3</title>
-  </head>
+    .status-badge-custom {
+        display: inline-block;
+        padding: 4px 12px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        border-radius: 20px;
+    }
 
-  <body>
-  <center><a href="/up/">BACK</a></center>
+    .badge-on-rent {
+        background-color: rgba(197, 164, 109, 0.15);
+        color: #9c7b41;
+        border: 1px solid rgba(197, 164, 109, 0.4);
+    }
 
-  <div class="content">
+    .badge-closed {
+        background-color: rgba(85, 98, 112, 0.12);
+        color: #556270;
+        border: 1px solid rgba(85, 98, 112, 0.3);
+    }
+</style>
+{% endblock %}
 
+{% block content %}
+<section class="booking-history-section">
     <div class="container">
-      <h2 class="mb-5">VIEW BOOKING DETAILS</h2>
+        <!-- Breadcrumb & Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <a href="{% url 'userpage' %}" style="font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: #718296;">
+                    <i class="fa fa-arrow-left"></i> Return to Client Dashboard
+                </a>
+                <h1 style="font-family: 'Rufina', Georgia, serif; font-size: 32px; color: #101C2C; margin: 10px 0 0;">
+                    My Rental Journeys & Status
+                </h1>
+            </div>
+            <div>
+                <a href="{% url 'userpage' %}" class="btn-gold-primary" style="padding: 10px 22px; font-size: 12px;">
+                    <i class="fa fa-car"></i> Reserve Another Vehicle
+                </a>
+            </div>
+        </div>
 
-      <div class="table-responsive">
+        <div class="booking-history-card">
+            <div style="padding: 20px 25px; border-bottom: 1px solid #EFECE4; background: #FFFFFF; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="font-family: 'Rufina', Georgia, serif; font-size: 18px; color: #101C2C; margin: 0;">
+                    <i class="fa fa-history" style="color: #C5A46D;"></i> Verified Booking Archive ({{ rec|length }})
+                </h3>
+                <span style="font-size: 12px; color: #718296;">Personal Rental History</span>
+            </div>
 
-        <table class="table custom-table">
-          <thead>
-            <tr>
-              <th scope="col">
-                <label class="control control--checkbox">
-                  <input type="checkbox" class="js-check-all"/>
-                  <div class="control__indicator"></div>
-                </label>
-              </th>
-              <th scope="col">Booking No</th>
-              <th scope="col">Booking Date</th>
-              <th scope="col">Car Image</th>
-              <th scope="col">Vehicle Name</th>
-              <th scope="col">Deposit Amount</th>
-              <th scope="col">rent paid</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-		   {% for j in rec %}
-            <tr>
-              <th scope="row">
-                <label class="control control--checkbox">
-                  <input type="checkbox"/>
-                  <div class="control__indicator"></div>
-                </label>
-              </th>
-              <td> {{j.bno}}</td>
-              <td>{{j.bdate}}</td>
-              <td><img src="/media/{{j.photo}}" width="250" height="250" /> </td>
-              <td>{{j.vname}}</td>
-              <td>{{j.sdepo}}</td>
-              <td>{{j.rday}}</td>
-              <td>{{j.status}}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-              <div class="col-12 text-center">
-			     <a  href="/up/">Back</a>
-		      </div>
-
+            <div class="table-responsive">
+                <table class="table" style="margin-bottom: 0;">
+                    <thead>
+                        <tr style="background-color: #101C2C; color: #FFFFFF;">
+                            <th style="padding: 14px 18px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; border: none;">Ref #</th>
+                            <th style="padding: 14px 18px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; border: none;">Booking Date</th>
+                            <th style="padding: 14px 18px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; border: none;">Vehicle Details</th>
+                            <th style="padding: 14px 18px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; border: none;">Daily Tariff</th>
+                            <th style="padding: 14px 18px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; border: none;">Security Deposit</th>
+                            <th style="padding: 14px 18px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; border: none;">Current Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for j in rec %}
+                        <tr style="border-top: 1px solid #EFECE4;">
+                            <td style="padding: 16px 18px; vertical-align: middle;">
+                                <strong style="font-size: 14px; color: #101C2C;">#{{ j.bno }}</strong>
+                            </td>
+                            <td style="padding: 16px 18px; vertical-align: middle; color: #556270; font-size: 13px;">
+                                <i class="fa fa-calendar" style="color: #C5A46D; margin-right: 5px;"></i> {{ j.bdate }}
+                            </td>
+                            <td style="padding: 16px 18px; vertical-align: middle;">
+                                <div style="display: flex; align-items: center;">
+                                    {% if j.photo and j.photo != 'x' %}
+                                        <img src="/media/{{ j.photo }}" class="history-vehicle-thumb" alt="Car">
+                                    {% elif j.vehicle.photo %}
+                                        <img src="{{ j.vehicle.photo.url }}" class="history-vehicle-thumb" alt="Car">
+                                    {% else %}
+                                        <img src="{% static 'hback/assets/images/featured-cars/fc1.png' %}" class="history-vehicle-thumb" alt="Car">
+                                    {% endif %}
+                                    <div>
+                                        <strong style="color: #101C2C; font-size: 14px;">{{ j.vehicle.vname }}</strong><br>
+                                        <small style="color: #718296;"><i class="fa fa-id-badge"></i> {{ j.vehicle.vno }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding: 16px 18px; vertical-align: middle;">
+                                <strong style="color: #101C2C; font-size: 14px;">₹{{ j.rday }}</strong>
+                                <small style="display: block; color: #718296;">/ day</small>
+                            </td>
+                            <td style="padding: 16px 18px; vertical-align: middle;">
+                                <span style="font-weight: 600; color: #101C2C;">₹{{ j.sdepo }}</span>
+                                <small style="display: block; color: #718296;">Authorized</small>
+                            </td>
+                            <td style="padding: 16px 18px; vertical-align: middle;">
+                                {% if j.status == 'On Rent' %}
+                                    <span class="status-badge-custom badge-on-rent">On Journey</span>
+                                {% else %}
+                                    <span class="status-badge-custom badge-closed">{{ j.status }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center" style="padding: 60px 20px; color: #718296;">
+                                <i class="fa fa-car" style="font-size: 36px; color: #C5A46D; margin-bottom: 12px; display: block;"></i>
+                                <h4 style="color: #101C2C; margin: 0 0 6px;">No Bookings Recorded</h4>
+                                <p style="font-size: 13px; color: #718296; margin: 0;">You have not made any vehicle reservations yet. Browse our signature fleet to reserve your first journey.</p>
+                                <a href="{% url 'userpage' %}" class="btn-gold-primary" style="margin-top: 18px; padding: 10px 20px; font-size: 12px;">Browse Available Cars</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-  </div>
-
-
-
-    <script src="{% static 'viewfacility/js/jquery-3.3.1.min.js' %}"></script>
-    <script src="{% static 'viewfacility/js/popper.min.js' %}"></script>
-    <script src="{% static 'viewfacility/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'viewfacility/js/main.js' %}"></script>
-  </body>
-</html>
+</section>
+{% endblock %}

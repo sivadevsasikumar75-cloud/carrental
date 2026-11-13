@@ -1,103 +1,246 @@
-<!DOCTYPE html>
+{% extends "admin_base_premium.html" %}
 {% load static %}
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - Rent Closing</title>
-    <link href="{% static 'af/assets/css/bootstrap.css' %}" rel="stylesheet" />
-    <link href="{% static 'af/assets/css/font-awesome.css' %}" rel="stylesheet" />
-    <link href="{% static 'af/assets/css/basic.css' %}" rel="stylesheet" />
-    <link href="{% static 'af/assets/css/custom.css' %}" rel="stylesheet" />
-</head>
 
-<body>
-<div id="wrapper">
-    <nav class="navbar navbar-default navbar-cls-top">
-        <div class="navbar-header"><a class="navbar-brand">ADMIN PANEL</a></div>
-        <div class="header-right"><a href="/logout/" class="btn btn-danger">Logout</a></div>
-    </nav>
+{% block title %}Rent Closing & Settlement Terminal | Weekend Car Rentals Admin{% endblock %}
+{% block nav_active_rentals %}active{% endblock %}
 
-    <div id="page-wrapper">
-        <div id="page-inner">
-            <h1 class="page-head-line">VEHICLE RENT CLOSING</h1>
-            <div class="panel panel-info">
-                <div class="panel-heading">Process Return Details (Booking #{{bno}})</div>
-                <div class="panel-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Vehicle No / Name</label>
-                                <input class="form-control" value="{{vno}} - {{vname}}" readonly>
+{% block extra_head %}
+<style>
+    .return-metric-group {
+        margin-bottom: 20px;
+    }
 
-                                <label>No of Days</label>
-                                <input class="form-control" id="nod" value="{{ nod }}" readonly>
+    .return-metric-label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #101C2C;
+        margin-bottom: 8px;
+    }
 
-                                <label>Rent per Day</label>
-                                <input class="form-control" id="rday" value="{{rday}}" readonly>
+    .return-form-control {
+        width: 100%;
+        height: 48px;
+        padding: 10px 14px;
+        font-size: 14px;
+        border: 1px solid #EFECE4;
+        border-radius: 4px;
+        background-color: #FAF8F4;
+        color: #101C2C;
+        font-weight: 600;
+    }
 
-                                <label>Base Rent Total</label>
-                                <input class="form-control" id="charge" value="{{charge}}" readonly>
+    .return-form-control[readonly] {
+        background-color: #F7F5EF;
+        color: #556270;
+    }
+
+    .input-highlight-endkm {
+        background-color: #FFFFFF !important;
+        border: 2px solid #C5A46D !important;
+        color: #101C2C !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        box-shadow: 0 0 0 3px rgba(197, 164, 109, 0.15) !important;
+    }
+
+    .input-highlight-endkm:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(197, 164, 109, 0.25) !important;
+    }
+
+    .balance-card-banner {
+        background: #101C2C;
+        border: 2px solid #C5A46D;
+        border-radius: 4px;
+        padding: 24px;
+        color: #FFFFFF;
+        text-align: center;
+        margin: 25px 0;
+    }
+
+    .balance-headline {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #C5A46D;
+        margin-bottom: 10px;
+    }
+
+    .balance-numeric-input {
+        background: transparent !important;
+        border: none !important;
+        font-family: 'Rufina', Georgia, serif !important;
+        font-size: 38px !important;
+        font-weight: 700 !important;
+        text-align: center !important;
+        color: #FFFFFF !important;
+        height: 60px !important;
+        width: 100% !important;
+        box-shadow: none !important;
+    }
+
+    .settlement-summary-box {
+        background: #FFFFFF;
+        border: 1px solid #EFECE4;
+        border-radius: 4px;
+        padding: 16px 20px;
+        margin-bottom: 15px;
+    }
+
+    .settlement-summary-box strong {
+        font-size: 18px;
+        color: #101C2C;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-page-header">
+    <div>
+        <h1 class="admin-page-title">Vehicle Return & Settlement Terminal</h1>
+        <p class="admin-page-subtitle">Reconcile trip distance, calculate excess kilometre surcharges, and finalize settlement for <strong>Booking #{{ bno }}</strong>.</p>
+    </div>
+    <div>
+        <a href="{% url 'adminviewbooking' %}" class="btn-navy-action">
+            <i class="fa fa-arrow-left"></i> Return to Active Rentals
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <div class="admin-panel">
+            <div class="admin-panel-heading">
+                <h3 class="admin-panel-title">
+                    <i class="fa fa-calculator"></i> Return Reconciliation (Booking Ref: #{{ bno }})
+                </h3>
+                <span class="status-pill status-on-rent">Final Check-In</span>
+            </div>
+
+            <div class="admin-panel-body" style="padding: 30px;">
+                <form method="POST" action="">
+                    {% csrf_token %}
+
+                    <!-- Base Rental Parameters -->
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="return-metric-group">
+                                <label class="return-metric-label">Vehicle Identifier</label>
+                                <input class="return-form-control" value="{{ vno }} &bull; {{ vname }}" readonly>
                             </div>
 
-                            <div class="col-md-6">
-                                <label>Start Odometer (Past Kms)</label>
-                                <input class="form-control" id="cread" value="{{cread}}" readonly>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="return-metric-group">
+                                        <label class="return-metric-label">Trip Duration (Days)</label>
+                                        <input class="return-form-control" id="nod" value="{{ nod }}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="return-metric-group">
+                                        <label class="return-metric-label">Daily Tariff (₹)</label>
+                                        <input class="return-form-control" id="rday" value="{{ rday }}" readonly>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <label>End Odometer (Present Kms)</label>
-                                <input class="form-control" type="number" name="pread" id="pread" placeholder="Enter current reading" required>
-
-                                <label>Total Kms Driven</label>
-                                <input class="form-control" name="kms" id="kms" readonly>
-
-                                <label>Max Allowed Km (Total for {{nod}} days)</label>
-                                <input class="form-control" id="max_km_display" value="{{ max_km }} per day" readonly>
-                                <input type="hidden" id="max_km_val" value="{{max_km}}">
+                            <div class="return-metric-group">
+                                <label class="return-metric-label">Base Rental Subtotal (₹)</label>
+                                <input class="return-form-control" id="charge" value="{{ charge }}" readonly style="color: #101C2C; font-weight: 700;">
                             </div>
                         </div>
 
-                        <hr>
+                        <!-- Odometer Entry -->
+                        <div class="col-sm-6">
+                            <div class="return-metric-group">
+                                <label class="return-metric-label">Departure Odometer (Past KM)</label>
+                                <input class="return-form-control" id="cread" value="{{ cread }}" readonly>
+                            </div>
 
-                        <div class="row">
-                            <div class="col-md-3">
-                                <label>Excess Km</label>
-                                <input class="form-control" name="ekm" id="ekm" readonly>
+                            <div class="return-metric-group">
+                                <label class="return-metric-label" style="color: #C5A46D;">
+                                    <i class="fa fa-tachometer"></i> Arrival Odometer (Present KM) <span style="color:#d9534f;">*</span>
+                                </label>
+                                <input class="return-form-control input-highlight-endkm" type="number" name="pread" id="pread" placeholder="Input return odometer reading" required autofocus>
                             </div>
-                            <div class="col-md-3">
-                                <label>Excess Charge (Rate: {{erate}})</label>
-                                <input class="form-control" name="echarge" id="echarge" readonly>
-                                <input type="hidden" id="erate_val" value="{{erate}}">
-                            </div>
-                            <div class="col-md-3">
-                                <label>Total Payable</label>
-                                <input class="form-control" name="tcharge" id="tcharge" readonly style="background: #dff0d8; font-weight: bold; border: 2px solid #3c763d;">
-                            </div>
-                            <div class="col-md-3">
-                                <label>Security Deposit (Paid)</label>
-                                <input class="form-control" id="sdepo" value="{{sdepo}}" readonly>
+
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <div class="return-metric-group">
+                                        <label class="return-metric-label">Total KM Driven</label>
+                                        <input class="return-form-control" name="kms" id="kms" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <div class="return-metric-group">
+                                        <label class="return-metric-label">Daily Limit</label>
+                                        <input class="return-form-control" id="max_km_display" value="{{ max_km }} KM/day" readonly>
+                                        <input type="hidden" id="max_km_val" value="{{ max_km }}">
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row" style="margin-top: 15px;">
-                            <div class="col-md-12">
-                                <label>Balance Amount (Payable / Refundable)</label>
-                                <input class="form-control" name="bal" id="bal" readonly style="font-size: 1.8em; height: 60px; color: #a94442; font-weight: bold; background: #f2dede;">
+                    <hr style="border-color: #EFECE4; margin: 15px 0 25px;">
+
+                    <!-- Excess Distance & Financial Reconciliation -->
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="return-metric-group">
+                                <label class="return-metric-label">Excess Distance</label>
+                                <input class="return-form-control" name="ekm" id="ekm" readonly>
                             </div>
                         </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="return-metric-group">
+                                <label class="return-metric-label">Excess Rate</label>
+                                <input class="return-form-control" name="echarge" id="echarge" readonly>
+                                <input type="hidden" id="erate_val" value="{{ erate }}">
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="return-metric-group">
+                                <label class="return-metric-label">Total Payable</label>
+                                <input class="return-form-control" name="tcharge" id="tcharge" readonly style="background: rgba(46, 125, 50, 0.1); border-color: rgba(46, 125, 50, 0.4); color: #2e7d32; font-weight: 700;">
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="return-metric-group">
+                                <label class="return-metric-label">Security Deposit</label>
+                                <input class="return-form-control" id="sdepo" value="{{ sdepo }}" readonly>
+                            </div>
+                        </div>
+                    </div>
 
-                        <br>
-                        <button type="submit" class="btn btn-success btn-lg btn-block">FINAL CLOSE & GENERATE BILL</button>
-                    </form>
-                </div>
+                    <!-- Final Balance Banner -->
+                    <div class="balance-card-banner">
+                        <div class="balance-headline">
+                            <i class="fa fa-balance-scale"></i> Final Balance Reconciliation (₹)
+                        </div>
+                        <input class="balance-numeric-input" name="bal" id="bal" readonly>
+                        <p style="font-size: 12px; color: #AAB4C3; margin: 6px 0 0;">
+                            Positive indicates client payment required &bull; Negative indicates deposit refund due to client
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn-gold-action" style="width: 100%; height: 54px; justify-content: center; font-size: 14px;">
+                        <i class="fa fa-check-circle"></i> Finalize Trip Check-In & Release Vehicle
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
+{% block extra_js %}
 <script>
 function calcAll() {
-    // 1. Get Base Values
     let startKm = parseFloat(document.getElementById("cread").value) || 0;
     let endKm = parseFloat(document.getElementById("pread").value) || 0;
     let maxKmPerDay = parseFloat(document.getElementById("max_km_val").value) || 0;
@@ -105,7 +248,6 @@ function calcAll() {
     let baseRent = parseFloat(document.getElementById("charge").value) || 0;
     let deposit = parseFloat(document.getElementById("sdepo").value) || 0;
 
-    // --- FORCE DURATION TO AT LEAST 1 ---
     let nodElement = document.getElementById("nod");
     let nod = parseFloat(nodElement.value);
 
@@ -114,12 +256,10 @@ function calcAll() {
         nodElement.value = 1;
     }
 
-    // 2. KM Calculations
     let totalKms = endKm - startKm;
     if (totalKms < 0) totalKms = 0;
     document.getElementById("kms").value = totalKms.toFixed(0);
 
-    // 3. Excess Calculations
     let totalAllowed = maxKmPerDay * nod;
     let excessKms = totalKms - totalAllowed;
     if (excessKms < 0) excessKms = 0;
@@ -128,7 +268,6 @@ function calcAll() {
     let excessCharge = excessKms * excessRate;
     document.getElementById("echarge").value = excessCharge.toFixed(2);
 
-    // 4. Final Totals
     let totalPayable = baseRent + excessCharge;
     document.getElementById("tcharge").value = totalPayable.toFixed(2);
 
@@ -136,9 +275,7 @@ function calcAll() {
     document.getElementById("bal").value = balance.toFixed(2);
 }
 
-// Event listeners
 document.getElementById("pread").addEventListener("input", calcAll);
 window.onload = calcAll;
 </script>
-</body>
-</html>
+{% endblock %}

@@ -1,202 +1,329 @@
-<!doctype html>
+{% extends "base_premium.html" %}
 {% load static %}
-<html class="no-js" lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block title %}Client Portal & Available Fleet | Weekend Car Rentals{% endblock %}
 
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+{% block extra_head %}
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 
-    <script>
-        window.history.forward();
-        function noBack(){ window.history.forward(); }
-        window.onload = noBack;
-        window.onpageshow = function(evt){ if(evt.persisted) noBack(); };
-    </script>
+<script>
+    window.history.forward();
+    function noBack(){ window.history.forward(); }
+    window.onload = noBack;
+    window.onpageshow = function(evt){ if(evt.persisted) noBack(); };
+</script>
 
-    <title>CarVilla | Premium Rentals</title>
+<style>
+  .portal-header-section {
+    background: linear-gradient(135deg, rgba(16, 28, 44, 0.96) 0%, rgba(32, 40, 50, 0.92) 100%),
+                url("{% static 'hback/assets/images/welcome-hero/new_car_bg.png' %}") center center/cover no-repeat;
+    padding: 60px 0 50px;
+    color: #FFFFFF;
+    border-bottom: 2px solid #C5A46D;
+  }
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,600,700" rel="stylesheet">
+  .portal-welcome-badge {
+    display: inline-block;
+    padding: 5px 16px;
+    background: rgba(197, 164, 109, 0.2);
+    border: 1px solid #C5A46D;
+    color: #C5A46D;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
 
-    <link rel="stylesheet" href="{% static 'hpg/assets/css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'hpg/assets/css/linearicons.css' %}">
-    <link rel="stylesheet" href="{% static 'hpg/assets/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'hpg/assets/css/bootsnav.css' %}">
-    <link rel="stylesheet" href="{% static 'hpg/assets/css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'hpg/assets/css/responsive.css' %}">
+  .portal-title {
+    font-family: 'Rufina', Georgia, serif;
+    font-size: 36px;
+    color: #FFFFFF;
+    margin: 0 0 10px;
+  }
 
-    <style>
-        /* --- CUSTOM PREMIUM STYLES --- */
+  .portal-subtext {
+    font-size: 14px;
+    color: #E9EAEC;
+    max-width: 600px;
+    line-height: 1.7;
+    margin: 0;
+  }
 
-        /* Hero Section */
-        .welcome-hero {
-            background: url("{% static 'hpg/assets/images/welcome-hero/welcome-banner.jpg' %}") no-repeat center center/cover;
-            position: relative;
-            height: 70vh;
-            display: flex;
-            align-items: center;
-        }
+  /* Quick Navigation Cards Bar */
+  .portal-nav-bar {
+    margin-top: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
 
-        .welcome-hero:before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4));
-        }
+  .portal-quick-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(197, 164, 109, 0.4);
+    color: #FFFFFF;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
 
-        .welcome-hero-txt { position: relative; z-index: 5; color: #fff; text-align: center; width: 100%; }
+  .portal-quick-btn:hover {
+    background: #C5A46D;
+    color: #101C2C;
+    border-color: #C5A46D;
+  }
 
-        /* Car Section */
-        .featured-cars {
-            padding: 80px 0;
-            background: #f3f7f9;
-        }
+  .portal-quick-btn.active-tab {
+    background: #C5A46D;
+    color: #101C2C;
+    border-color: #C5A46D;
+    font-weight: 600;
+  }
 
-        .single-featured-cars {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            border: 1px solid #eee;
-        }
+  .portal-fleet-section {
+    padding: 60px 0 80px;
+    background-color: #F7F5EF;
+  }
 
-        /* 🔥 IMAGE RESIZING LOGIC */
-        .featured-img-box {
-            position: relative;
-            overflow: hidden;
-            height: 180px; /* Reduced height for a sleeker look */
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+  .portal-fleet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 35px;
+    border-bottom: 1px solid #E9EAEC;
+    padding-bottom: 15px;
+  }
 
-        .featured-cars-img {
-            width: 100%;
-            height: 100%;
-        }
+  .portal-fleet-title {
+    font-family: 'Rufina', Georgia, serif;
+    font-size: 26px;
+    color: #101C2C;
+    margin: 0;
+  }
 
-        .featured-cars-img img {
-            width: 100%;
-            height: 100%;
-            /* Use 'contain' if you want to see the whole car without cropping */
-            /* Use 'cover' if you want the image to fill the whole 180px box */
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
+  .fleet-count-badge {
+    background: #101C2C;
+    color: #C5A46D;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
 
-        .single-featured-cars:hover .featured-cars-img img {
-            transform: scale(1.08);
-        }
+  /* Dashboard Vehicle Card */
+  .dash-car-card {
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid rgba(16, 28, 44, 0.08);
+    box-shadow: 0 4px 15px rgba(16, 28, 44, 0.05);
+    overflow: hidden;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 30px);
+  }
 
-        /* Rent Now Overlay */
-        .featured-img-box a {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(78, 94, 251, 0.9);
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            opacity: 0;
-            transition: 0.3s;
-            text-decoration: none;
-            z-index: 10;
-        }
+  .dash-car-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(16, 28, 44, 0.12);
+    border-color: rgba(197, 164, 109, 0.4);
+  }
 
-        .featured-img-box:hover a { opacity: 1; }
+  .dash-car-img-wrapper {
+    position: relative;
+    height: 190px;
+    background-color: #1a2432;
+    overflow: hidden;
+  }
 
-        /* Card Content */
-        .featured-cars-txt { padding: 20px; text-align: center; }
-        .featured-cars-txt h2 { font-size: 18px; font-weight: 600; margin-bottom: 5px; color: #333; }
-        .featured-cars-txt h3 { color: #4e5efb; font-weight: 700; margin-bottom: 10px; font-size: 16px; }
-        .featured-cars-txt p { font-size: 12px; color: #777; margin: 2px 0; }
+  .dash-car-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
 
-        .spec-icon { color: #4e5efb; margin-right: 5px; width: 15px; }
+  .dash-car-card:hover .dash-car-img-wrapper img {
+    transform: scale(1.08);
+  }
 
-        .navbar-brand { font-weight: 700; color: #4e5efb !important; }
-        .navbar-brand span { font-size: 12px; color: #777; font-weight: 400; margin-left: 10px; }
-    </style>
-</head>
+  .dash-car-status {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 3px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    background: rgba(16, 28, 44, 0.85);
+    color: #C5A46D;
+    border: 1px solid #C5A46D;
+  }
 
-<body>
+  .dash-car-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
 
-    <section id="home" class="welcome-hero">
-        <div class="top-area">
-            <div class="header-area">
-                <nav class="navbar navbar-default bootsnav navbar-sticky navbar-scrollspy">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
-                                <i class="fa fa-bars"></i>
-                            </button>
-                            <a class="navbar-brand">CARVILLA <span>Welcome, {{name}}</span></a>
-                        </div>
-                        <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="#featured-cars">Book Now</a></li>
-                                <li><a href="/uvb/">Status</a></li>
-                                <li><a href="/cp/">Password</a></li>
-                                <li><a href="/logout/">Logout</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            </div>
+  .dash-car-name {
+    font-family: 'Rufina', Georgia, serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #101C2C;
+    margin: 0 0 6px;
+  }
+
+  .dash-car-pricing {
+    font-size: 22px;
+    font-family: 'Rufina', Georgia, serif;
+    font-weight: 700;
+    color: #101C2C;
+    margin-bottom: 15px;
+  }
+
+  .dash-car-pricing small {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: #778393;
+    font-weight: normal;
+  }
+
+  .dash-car-specs {
+    border-top: 1px solid #E9EAEC;
+    border-bottom: 1px solid #E9EAEC;
+    padding: 10px 0;
+    margin-bottom: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    font-size: 12px;
+    color: #4a5568;
+  }
+
+  .dash-car-specs i {
+    color: #C5A46D;
+    margin-right: 5px;
+    width: 14px;
+  }
+
+  .btn-rent-now {
+    margin-top: auto;
+    display: block;
+    text-align: center;
+    background-color: #101C2C;
+    color: #FFFFFF;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-rent-now:hover {
+    background-color: #C5A46D;
+    color: #101C2C;
+    box-shadow: 0 4px 15px rgba(197, 164, 109, 0.35);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Portal Welcome Header -->
+<section class="portal-header-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <span class="portal-welcome-badge"><i class="fa fa-user-circle"></i> Authenticated Member</span>
+        <h1 class="portal-title">Welcome back, {{ name }}</h1>
+        <p class="portal-subtext">
+          Browse our prime fleet ready for immediate dispatch, reserve your next weekend grand tourer, and monitor all active journeys.
+        </p>
+
+        <div class="portal-nav-bar">
+          <a href="#featured-cars" class="portal-quick-btn active-tab"><i class="fa fa-car"></i> Reserve Fleet</a>
+          <a href="{% url 'userviewbooking' %}" class="portal-quick-btn"><i class="fa fa-clock-o"></i> Rental Status & History</a>
+          <a href="{% url 'changepword' %}" class="portal-quick-btn"><i class="fa fa-key"></i> Security Settings</a>
+          <a href="{% url 'userfeedback' %}" class="portal-quick-btn"><i class="fa fa-commenting-o"></i> Share Feedback</a>
+          <a href="{% url 'logout' %}" class="portal-quick-btn"><i class="fa fa-sign-out"></i> Logout</a>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        <div class="container">
-            <div class="welcome-hero-txt">
-                <h2>Get Your Desired Car For Daily Rent</h2>
-                <p>Reliable, affordable, and hassle-free daily rental service.</p>
-                <button class="welcome-btn" onclick="window.location.href='#featured-cars'">Explore Fleet</button>
+<!-- Available Vehicles Section -->
+<section id="featured-cars" class="portal-fleet-section">
+  <div class="container">
+    <div class="portal-fleet-header">
+      <div>
+        <h2 class="portal-fleet-title">Available Luxury & Classic Fleet</h2>
+        <p style="font-size: 13px; color: #778393; margin: 4px 0 0;">Vehicles currently prepped and available for instant rental dispatch.</p>
+      </div>
+      <span class="fleet-count-badge">{{ crec|length }} Vehicles Available</span>
+    </div>
+
+    <div class="row">
+      {% for j in crec %}
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="dash-car-card">
+          <div class="dash-car-img-wrapper">
+            {% if j.photo %}
+              <img src="{{ j.photo.url }}" alt="{{ j.vname }}">
+            {% else %}
+              <img src="{% static 'hback/assets/images/featured-cars/fc1.png' %}" alt="{{ j.vname }}">
+            {% endif %}
+            <span class="dash-car-status">{{ j.status }}</span>
+          </div>
+
+          <div class="dash-car-body">
+            <h3 class="dash-car-name">{{ j.vname }}</h3>
+            <div class="dash-car-pricing">
+              &#8377;{{ j.rday }} <small>/ day</small>
             </div>
+
+            <div class="dash-car-specs">
+              <div><i class="fa fa-users"></i> {{ j.scapacity }} Seats</div>
+              <div><i class="fa fa-tint"></i> {{ j.ftype }}</div>
+              <div><i class="fa fa-paint-brush"></i> {{ j.vcolor }}</div>
+              <div><i class="fa fa-road"></i> {{ j.max_km }} KM/day</div>
+            </div>
+
+            <div style="font-size: 11px; color: #778393; margin-bottom: 14px;">
+              Deposit: &#8377;{{ j.sdepo }} &bull; Plate: {{ j.vno }}
+            </div>
+
+            <a href="{% url 'carbooking' j.id %}" class="btn-rent-now">
+              <i class="fa fa-calendar-check-o" style="margin-right: 5px;"></i> Rent Now
+            </a>
+          </div>
         </div>
-    </section>
-
-    <section id="featured-cars" class="featured-cars">
-        <div class="container">
-            <div class="section-header text-center">
-                <h2 style="font-weight: 700; margin-bottom: 40px;">Our Premium Fleet</h2>
-            </div>
-
-            <div class="featured-cars-content">
-                <div class="row">
-                    {% for j in crec %}
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="single-featured-cars">
-                            <div class="featured-img-box">
-                                <a href="/bnow/{{j.id}}/">RENT NOW</a>
-                                <div class="featured-cars-img">
-                                    <img src="{{j.photo.url}}" alt="{{j.vname}}">
-                                </div>
-                            </div>
-                            <div class="featured-cars-txt">
-                                <h2>{{j.vname}}</h2>
-                                <h3>₹{{j.rday}} <small style="color:#777; font-weight:400;">/ day</small></h3>
-                                <p><i class="fa fa-users spec-icon"></i> {{j.scapacity}} Seats</p>
-                                <p><i class="fa fa-tint spec-icon"></i> {{j.ftype}}</p>
-                                <p><i class="fa fa-paint-brush spec-icon"></i> {{j.vcolor}}</p>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <script src="{% static 'hpg/assets/js/jquery.js' %}"></script>
-    <script src="{% static 'hpg/assets/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'hpg/assets/js/bootsnav.js' %}"></script>
-    <script src="{% static 'hpg/assets/js/custom.js' %}"></script>
-
-</body>
-</html>
+      </div>
+      {% empty %}
+      <div class="col-xs-12 text-center" style="padding: 70px 0;">
+        <i class="fa fa-car" style="font-size: 48px; color: #C5A46D; margin-bottom: 20px;"></i>
+        <h3 style="color: #101C2C;">No vehicles are currently available for immediate booking.</h3>
+        <p style="color: #778393;">All vehicles in our signature fleet are currently on scheduled journeys. Please check back shortly.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

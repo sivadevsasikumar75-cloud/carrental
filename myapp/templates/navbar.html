@@ -1,0 +1,35 @@
+{% load static %}
+<nav class="navbar navbar-default bootsnav navbar-sticky navbar-scrollspy navbar-premium-header" data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-premium-menu">
+        <i class="fa fa-bars"></i>
+      </button>
+      <a class="navbar-brand premium-brand" href="{% url 'home' %}">
+        <span class="gold-accent">WEEKEND</span> CAR RENTALS
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse menu-ui-design" id="navbar-premium-menu">
+      <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+        <li class="scroll active"><a href="#home">Home</a></li>
+        <li class="scroll"><a href="#browse-cars">Browse Cars</a></li>
+        <li class="scroll"><a href="#featured-cars">Featured</a></li>
+        <li class="scroll"><a href="#why-choose-us">Why Us</a></li>
+        <li class="scroll"><a href="#about-us">About</a></li>
+        <li class="scroll"><a href="#testimonials">Reviews</a></li>
+        {% if request.session.id %}
+          {% if request.session.rights == 'A' %}
+            <li><a href="{% url 'adminpage' %}" class="nav-highlight">Admin Dashboard</a></li>
+          {% else %}
+            <li><a href="{% url 'userpage' %}" class="nav-highlight">Dashboard</a></li>
+          {% endif %}
+          <li><a href="{% url 'logout' %}" class="nav-btn-logout">Logout</a></li>
+        {% else %}
+          <li><a href="{% url 'adduserreg' %}" class="nav-highlight">Register</a></li>
+          <li><a href="{% url 'login' %}" class="nav-btn-login">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

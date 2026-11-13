@@ -1,94 +1,228 @@
-<!DOCTYPE html>
+{% extends "base_premium.html" %}
 {% load static %}
-<html lang="en">
-<head>
-	<title>Change Password | Car Villa</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/png" href="{% static 'log/images/icons/favicon.ico' %}"/>
-<link rel="stylesheet" type="text/css" href="{% static 'log/vendor/bootstrap/css/bootstrap.min.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'log/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'log/fonts/iconic/css/material-design-iconic-font.min.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'log/css/util.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'log/css/main.css' %}">
+
+{% block title %}Account Security Credentials | Weekend Car Rentals{% endblock %}
+
+{% block extra_head %}
 <style>
-        /* Custom styling for Error Messages */
-        .error-msg {
-            color: #ffcccc;
-            background: rgba(255, 0, 0, 0.2);
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 14px;
-            border: 1px solid rgba(255, 0, 0, 0.3);
-        }
-        .container-login100 {
-            background: linear-gradient(45deg, #202020, #2c3e50); /* Darker, professional gradient */
-        }
-        .login100-form-logo {
-            background-color: #00ca79; /* Matching the green theme from the admin dashboard */
-        }
-    </style>
-</head>
-<body>
+    .security-flow-section {
+        padding: 60px 0 90px;
+        background: radial-gradient(circle at 10% 20%, rgba(16, 28, 44, 0.04) 0%, rgba(247, 245, 239, 1) 90%);
+        min-height: calc(100vh - 250px);
+    }
 
-	<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100">
-				<form class="login100-form validate-form" method="post">
-					{% csrf_token %}
-					<span class="login100-form-logo">
-						<i class="zmdi zmdi-lock-outline"></i>
-					</span>
+    .security-card {
+        background: #FFFFFF;
+        border: 1px solid rgba(197, 164, 109, 0.35);
+        border-radius: 4px;
+        box-shadow: 0 15px 45px rgba(16, 28, 44, 0.12);
+        overflow: hidden;
+    }
 
-					<span class="login100-form-title p-b-34 p-t-27">
-						Change Password
-					</span>
+    .security-banner {
+        background: linear-gradient(135deg, rgba(16, 28, 44, 0.96) 0%, rgba(32, 40, 50, 0.92) 100%),
+                    url("{% static 'hback/assets/images/welcome-hero/new_car_bg.png' %}") center center/cover no-repeat;
+        padding: 35px 40px;
+        color: #FFFFFF;
+        border-bottom: 2px solid #C5A46D;
+    }
 
-                    {% if error %}
-                    <div class="error-msg">
-                        <i class="fa fa-exclamation-triangle"></i> {{error}}
+    .security-badge {
+        display: inline-block;
+        padding: 4px 14px;
+        background: rgba(197, 164, 109, 0.2);
+        border: 1px solid #C5A46D;
+        color: #C5A46D;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border-radius: 20px;
+        margin-bottom: 10px;
+    }
+
+    .security-title {
+        font-family: 'Rufina', Georgia, serif;
+        font-size: 28px;
+        color: #FFFFFF;
+        margin: 0 0 6px;
+    }
+
+    .security-body {
+        padding: 40px;
+    }
+
+    .security-form-group {
+        margin-bottom: 22px;
+    }
+
+    .security-label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #101C2C;
+        margin-bottom: 8px;
+    }
+
+    .security-input-wrapper {
+        position: relative;
+    }
+
+    .security-input {
+        width: 100%;
+        height: 48px;
+        padding: 10px 44px 10px 16px;
+        font-size: 14px;
+        border: 1px solid #E9EAEC;
+        border-radius: 4px;
+        background-color: #FAF8F4;
+        color: #101C2C;
+        transition: all 0.3s ease;
+    }
+
+    .security-input:focus {
+        outline: none;
+        border-color: #C5A46D;
+        background-color: #FFFFFF;
+        box-shadow: 0 0 0 3px rgba(197, 164, 109, 0.15);
+    }
+
+    .pwd-toggle-btn {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #AAB4C3;
+        cursor: pointer;
+        padding: 0;
+        font-size: 15px;
+    }
+
+    .pwd-toggle-btn:hover {
+        color: #C5A46D;
+    }
+
+    .btn-security-submit {
+        width: 100%;
+        height: 52px;
+        background-color: #101C2C;
+        color: #FFFFFF;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .btn-security-submit:hover {
+        background-color: #C5A46D;
+        color: #101C2C;
+        box-shadow: 0 6px 20px rgba(197, 164, 109, 0.35);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="security-flow-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+                <div class="security-card">
+                    <div class="security-banner">
+                        <span class="security-badge"><i class="fa fa-lock"></i> Credential Protection</span>
+                        <h1 class="security-title">Update Access Password</h1>
+                        <p style="font-size: 13px; color: #E9EAEC; margin: 0; line-height: 1.6;">
+                            Modify your private account password. You will be redirected to re-authenticate following successful update.
+                        </p>
                     </div>
-                    {% endif %}
 
-					<div class="wrap-input100 validate-input" data-validate = "Current password is required">
-						<input class="input100" type="password" name="t1" placeholder="Current Password">
-						<span class="focus-input100" data-placeholder="&#xf191;"></span>
-					</div>
+                    <div class="security-body">
+                        {% if error %}
+                        <div style="background: rgba(217, 83, 79, 0.1); border-left: 3px solid #d9534f; color: #a94442; padding: 12px 16px; border-radius: 3px; font-size: 13px; margin-bottom: 25px;">
+                            <i class="fa fa-exclamation-triangle"></i> {{ error }}
+                        </div>
+                        {% endif %}
 
-				   <div class="wrap-input100 validate-input" data-validate="New password is required">
-						<input class="input100" type="password" name="t2" placeholder="New Password">
-						<span class="focus-input100" data-placeholder="&#xf191;"></span>
-					</div>
+                        <!-- Preserves action='' and input names: t1, t2, t3 required by changepword view -->
+                        <form method="POST" action="">
+                            {% csrf_token %}
 
-					<div class="wrap-input100 validate-input" data-validate="Please confirm new password">
-						<input class="input100" type="password" name="t3" placeholder="Confirm New Password">
-						<span class="focus-input100" data-placeholder="&#xf191;"></span>
-					</div>
+                            <div class="security-form-group">
+                                <label class="security-label" for="old_pwd">Current Active Password <span style="color:#d9534f;">*</span></label>
+                                <div class="security-input-wrapper">
+                                    <input type="password" id="old_pwd" name="t1" class="security-input" placeholder="Enter your existing password" required autofocus>
+                                    <button type="button" class="pwd-toggle-btn" onclick="togglePwd('old_pwd', this)">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
 
-					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit" style="background: #00ca79;">
-							Update Password
-						</button>
-					</div>
+                            <div class="security-form-group">
+                                <label class="security-label" for="new_pwd">New Password <span style="color:#d9534f;">*</span></label>
+                                <div class="security-input-wrapper">
+                                    <input type="password" id="new_pwd" name="t2" class="security-input" placeholder="Create a strong new password" minlength="3" required>
+                                    <button type="button" class="pwd-toggle-btn" onclick="togglePwd('new_pwd', this)">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
 
-					<div class="text-center p-t-40">
-						<a class="txt1" href="/ap/">
-							<i class="fa fa-long-arrow-left"></i> Back to Dashboard
-						</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                            <div class="security-form-group">
+                                <label class="security-label" for="confirm_pwd">Confirm New Password <span style="color:#d9534f;">*</span></label>
+                                <div class="security-input-wrapper">
+                                    <input type="password" id="confirm_pwd" name="t3" class="security-input" placeholder="Re-type your new password" minlength="3" required>
+                                    <button type="button" class="pwd-toggle-btn" onclick="togglePwd('confirm_pwd', this)">
+                                        <i class="fa fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
 
+                            <button type="submit" class="btn-security-submit">
+                                <i class="fa fa-check-circle" style="margin-right: 6px;"></i> Update & Re-Authenticate
+                            </button>
 
-	<div id="dropDownSelect1"></div>
+                            <div style="text-align: center; margin-top: 18px;">
+                                {% if request.session.rights == 'A' %}
+                                    <a href="{% url 'adminpage' %}" style="color: #718296; font-size: 12px; text-decoration: none;">
+                                        <i class="fa fa-arrow-left"></i> Return to Admin Console
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'userpage' %}" style="color: #718296; font-size: 12px; text-decoration: none;">
+                                        <i class="fa fa-arrow-left"></i> Return to Client Dashboard
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
 
-<script src="{% static 'log/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
-	<script src="{% static 'log/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'log/js/main.js' %}"></script>
-
-</body>
-</html>
+{% block extra_js %}
+<script>
+    function togglePwd(fieldId, btn) {
+        const input = document.getElementById(fieldId);
+        const icon = btn.querySelector('i');
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+</script>
+{% endblock %}

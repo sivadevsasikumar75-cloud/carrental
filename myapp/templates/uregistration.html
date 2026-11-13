@@ -1,277 +1,379 @@
-<!DOCTYPE html>
+{% extends "base_premium.html" %}
 {% load static %}
-<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <title>CarServ - Car Repair HTML Template</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+{% block title %}Membership Registration | Weekend Car Rentals{% endblock %}
 
-    <!-- Favicon -->
-    <link href="{% static 'book/img/favicon.ico' %}" rel="icon">
+{% block extra_head %}
+<style>
+  .reg-section {
+    padding: 60px 0 80px;
+    background: radial-gradient(circle at 10% 20%, rgba(16, 28, 44, 0.04) 0%, rgba(247, 245, 239, 1) 90%);
+    min-height: calc(100vh - 250px);
+  }
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Ubuntu:wght@400;500&display=swap" rel="stylesheet"> 
+  .reg-card {
+    background: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 0 15px 45px rgba(16, 28, 44, 0.12);
+    border: 1px solid rgba(197, 164, 109, 0.35);
+    overflow: hidden;
+  }
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+  .reg-header-banner {
+    background: linear-gradient(135deg, rgba(16, 28, 44, 0.96) 0%, rgba(32, 40, 50, 0.92) 100%),
+                url("{% static 'hback/assets/images/welcome-hero/new_car_bg.png' %}") center center/cover no-repeat;
+    padding: 40px 45px;
+    color: #FFFFFF;
+    border-bottom: 2px solid #C5A46D;
+  }
 
-    <!-- Libraries Stylesheet -->
-    <link href="{% static 'book/lib/animate/animate.min.css' %}" rel="stylesheet">
-    <link href="{% static 'book/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
-    <link href="{% static 'book/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css' %}" rel="stylesheet" />
+  .reg-header-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    background: rgba(197, 164, 109, 0.2);
+    border: 1px solid #C5A46D;
+    color: #C5A46D;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{% static 'book/css/bootstrap.min.css' %}" rel="stylesheet">
+  .reg-header-title {
+    font-family: 'Rufina', Georgia, serif;
+    font-size: 30px;
+    color: #FFFFFF;
+    margin: 0 0 10px;
+  }
 
-    <!-- Template Stylesheet -->
-    <link href="{% static 'book/css/style.css' %}" rel="stylesheet">
-</head>
+  .reg-header-subtext {
+    font-size: 14px;
+    color: #E9EAEC;
+    max-width: 650px;
+    margin: 0;
+    line-height: 1.7;
+  }
 
-<body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-    <!-- Spinner End -->
+  .reg-form-body {
+    padding: 45px;
+  }
 
+  .form-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #101C2C;
+    border-bottom: 1px solid #E9EAEC;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-    <!-- Topbar Start -->
+  .form-section-title i {
+    color: #C5A46D;
+  }
 
-    <!-- Topbar End -->
+  .reg-form-group {
+    margin-bottom: 22px;
+  }
 
+  .reg-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #202832;
+    margin-bottom: 8px;
+  }
 
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary"><i class="fa fa-car me-3"></i></h2>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-    <a href="{% url 'home' %}" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">
-        Home <i class="fa fa-arrow-right ms-3"></i>
-    </a>
-</div>
-    </nav>
-    <!-- Navbar End -->
+  .reg-label span.req {
+    color: #c9302c;
+  }
 
+  .reg-input {
+    width: 100%;
+    height: 48px;
+    padding: 10px 16px;
+    font-size: 14px;
+    border: 1px solid #E9EAEC;
+    border-radius: 4px;
+    background-color: #FAF8F4;
+    color: #101C2C;
+    transition: all 0.3s ease;
+  }
 
-    <!-- Page Header Start -->
+  .reg-input:focus {
+    outline: none;
+    border-color: #C5A46D;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(197, 164, 109, 0.15);
+  }
 
-    <!-- Page Header End -->
+  .reg-file-upload-box {
+    border: 1px dashed rgba(197, 164, 109, 0.6);
+    background-color: #FAF8F4;
+    padding: 15px 16px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
 
+  .reg-file-upload-box:hover {
+    background-color: #FFFFFF;
+    border-color: #C5A46D;
+  }
 
+  .reg-file-input {
+    width: 100%;
+    font-size: 13px;
+    color: #556270;
+  }
 
+  .reg-file-hint {
+    font-size: 11px;
+    color: #AAB4C3;
+    margin-top: 6px;
+    display: block;
+  }
 
-    <!-- Booking Start -->
-    <div class="container-fluid bg-secondary booking my-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container">
-            <div class="row gx-5">
-                <div class="col-lg-6 py-5">
-                    <div class="py-5">
-                        <h1 class="text-white mb-4">User registration Page</h1>
-                        <p class="text-white mb-0">Register to access our car rental services quickly and easily. Fill in your details to create an account and enjoy a smooth booking experience. We ensure your information is secure and provide reliable support for all your rental needs.</p>
-                    </div>
+  .btn-reg-submit {
+    display: inline-block;
+    width: 100%;
+    height: 52px;
+    background-color: #101C2C;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+  }
+
+  .btn-reg-submit:hover {
+    background-color: #C5A46D;
+    color: #101C2C;
+    box-shadow: 0 4px 18px rgba(197, 164, 109, 0.35);
+  }
+
+  .reg-footer-prompt {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 14px;
+    color: #556270;
+  }
+
+  .reg-footer-prompt a {
+    color: #C5A46D;
+    font-weight: 600;
+    margin-left: 5px;
+  }
+
+  .reg-footer-prompt a:hover {
+    color: #101C2C;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="reg-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <div class="reg-card">
+          <!-- Card Header Banner -->
+          <div class="reg-header-banner">
+            <span class="reg-header-badge"><i class="fa fa-id-card-o"></i> Client Registration</span>
+            <h1 class="reg-header-title">Create Your Weekend Car Rentals Membership</h1>
+            <p class="reg-header-subtext">
+              Join our private collective to reserve hand-selected luxury vehicles, enjoy rapid handovers, and experience seamless journeys.
+            </p>
+          </div>
+
+          <!-- Form Body -->
+          <div class="reg-form-body">
+            <form method="POST" enctype="multipart/form-data" action="">
+              {% csrf_token %}
+
+              <!-- Personal Information -->
+              <div class="form-section-title">
+                <i class="fa fa-user-circle-o"></i> 1. Personal & Contact Profile
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="reg-form-group">
+                    <label class="reg-label" for="reg_fname">Full Name <span class="req">*</span></label>
+                    <input type="text"
+                           class="reg-input"
+                           id="reg_fname"
+                           placeholder="e.g. Alexander Hamilton"
+                           name="fname"
+                           pattern="^[A-Za-z]+( [A-Za-z]+)*$"
+                           title="Only letters, no extra spaces"
+                           oninput="this.value = this.value.trimStart()"
+                           required>
+                  </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="bg-primary h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn" data-wow-delay="0.6s">
-                        <h1 class="text-white mb-4">User Registration Form</h1>
-                       <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
 
-    <div class="row g-3">
-
-        <!-- Full Name -->
-        <div class="col-12 col-sm-6">
-            Full Name
-
-<input type="text" class="form-control border-0"
-       placeholder="Full Name"
-       style="height: 55px;"
-       name="fname"
-       pattern="^[A-Za-z]+( [A-Za-z]+)*$"
-       title="Only letters, no extra spaces"
-       oninput="this.value = this.value.trimStart()"
-       required>
-        </div>
-
-        <!-- Address -->
-        <div class="col-12 col-sm-6">
-            Address
-       <input type="text" class="form-control border-0"
-       placeholder="Address"
-       style="height: 55px;"
-       name="adds"
-       pattern="^[A-Za-z0-9,\/\- ]{5,100}$"
-       title="Address should not contain dots (.) and must be valid"
-       oninput="this.value = this.value.trimStart()"
-       required>
-
-        </div>
-
-        <!-- Email -->
-        <div class="col-12 col-sm-6">
-            Email Address
-        <!-- Email -->
-<input type="email" class="form-control border-0"
-       placeholder="Email"
-       style="height: 55px;"
-       name="email"
-       oninput="this.value = this.value.trim()"
-       required>
-
-        </div>
-
-        <!-- Phone -->
-        <div class="col-12 col-sm-6">
-            Mobile No
-            <input type="tel" class="form-control border-0"
-                   placeholder="Phone Number"
-                   style="height: 55px;"
-                   name="ph_no"
-                   pattern="[6-9]{1}[0-9]{9}"
-                   title="Enter valid 10-digit number starting with 6-9"
-                   maxlength="10"
-                   required>
-        </div>
-
-        <!-- DOB -->
-        <div class="col-12 col-sm-6">
-            Date of Birth
-            <input type="date" class="form-control border-0"
-                   style="height: 55px;"
-                   name="dob"
-                   max="2007-12-31"
-                   required>
-        </div>
-
-        <!-- Aadhaar Upload -->
-        <div class="col-12 col-sm-6">
-            Aadhaar
-            <input type="file" class="form-control border-0"
-                   style="height: 55px;"
-                   name="adhno"
-                   accept=".jpg,.jpeg,.png,.pdf"
-                   required>
-        </div>
-
-        <!-- Driving Licence Upload -->
-        <div class="col-12 col-sm-6">
-            Driving Licence
-            <input type="file" class="form-control border-0"
-                   style="height: 55px;"
-                   name="dls"
-                   accept=".jpg,.jpeg,.png,.pdf"
-                   required>
-        </div>
-
-        <!-- Username -->
-        <div class="col-12 col-sm-6">
-            User Name
-<input type="text" class="form-control border-0"
-       placeholder="User Name"
-       style="height: 55px;"
-       name="uname"
-       pattern="[A-Za-z0-9]{3,}"
-       title="Username must be at least 3 characters (letters and numbers only)"
-       required>
-        </div>
-
-
-        <!-- Password -->
-        <div class="col-12 col-sm-6">
-            Password
-            <input type="password" class="form-control border-0"
-                   placeholder="Password"
-                   style="height: 55px;"
-                   name="pword"
-                   minlength="3"
-                   required>
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="col-12 col-sm-6">
-            Confirm Password
-            <input type="password" class="form-control border-0"
-                   placeholder="Confirm Password"
-                   style="height: 55px;"
-                   name="pword1"
-                   required>
-        </div>
-
-        <!-- Submit -->
-        <div class="col-12">
-            <button class="btn btn-secondary w-100 py-3" type="submit">
-                Register Now
-            </button>
-        </div>
-
-    </div>
-</form>
-
-
-                    </div>
+                <div class="col-sm-6">
+                  <div class="reg-form-group">
+                    <label class="reg-label" for="reg_email">Email Address <span class="req">*</span></label>
+                    <input type="email"
+                           class="reg-input"
+                           id="reg_email"
+                           placeholder="client@prestige.com"
+                           name="email"
+                           oninput="this.value = this.value.trim()"
+                           required>
+                  </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <!-- Booking End -->
+              </div>
 
-
-
-    <!-- Footer Start -->
-
-        <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
-
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <div class="footer-menu">
-                            <a href="/h/" class="btn btn-primary">Home</a>
-                            <a href="">Cookies</a>
-                            <a href="">Help</a>
-                            <a href="">FQAs</a>
-                        </div>
-                    </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="reg-form-group">
+                    <label class="reg-label" for="reg_ph_no">Mobile Number <span class="req">*</span></label>
+                    <input type="tel"
+                           class="reg-input"
+                           id="reg_ph_no"
+                           placeholder="10-digit mobile number"
+                           name="ph_no"
+                           pattern="[6-9]{1}[0-9]{9}"
+                           title="Enter valid 10-digit number starting with 6-9"
+                           maxlength="10"
+                           required>
+                  </div>
                 </div>
-            </div>
+
+                <div class="col-sm-6">
+                  <div class="reg-form-group">
+                    <label class="reg-label" for="reg_dob">Date of Birth <span class="req">*</span></label>
+                    <input type="date"
+                           class="reg-input"
+                           id="reg_dob"
+                           name="dob"
+                           max="2007-12-31"
+                           required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="reg-form-group">
+                <label class="reg-label" for="reg_adds">Residential / Office Address <span class="req">*</span></label>
+                <input type="text"
+                       class="reg-input"
+                       id="reg_adds"
+                       placeholder="Street address, City, Postal Code"
+                       name="adds"
+                       pattern="^[A-Za-z0-9,\/\- ]{5,100}$"
+                       title="Address should not contain dots (.) and must be valid"
+                       oninput="this.value = this.value.trimStart()"
+                       required>
+              </div>
+
+              <!-- Identity & License Documents -->
+              <div class="form-section-title" style="margin-top: 35px;">
+                <i class="fa fa-shield"></i> 2. Identity Verification & Driving Credentials
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="reg-form-group">
+                    <label class="reg-label" for="reg_adhno">Aadhaar Card / Government ID <span class="req">*</span></label>
+                    <div class="reg-file-upload-box">
+                      <input type="file"
+                             class="reg-file-input"
+                             id="reg_adhno"
+                             name="adhno"
+                             accept=".jpg,.jpeg,.png,.pdf"
+                             required>
+                      <span class="reg-file-hint"><i class="fa fa-info-circle"></i> JPG, PNG or PDF (Max 5MB)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="reg-form-group">
+                    <label class="reg-label" for="reg_dls">Valid Driving License <span class="req">*</span></label>
+                    <div class="reg-file-upload-box">
+                      <input type="file"
+                             class="reg-file-input"
+                             id="reg_dls"
+                             name="dls"
+                             accept=".jpg,.jpeg,.png,.pdf"
+                             required>
+                      <span class="reg-file-hint"><i class="fa fa-info-circle"></i> JPG, PNG or PDF (Max 5MB)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Account Security -->
+              <div class="form-section-title" style="margin-top: 35px;">
+                <i class="fa fa-lock"></i> 3. Account Access Credentials
+              </div>
+
+              <div class="reg-form-group">
+                <label class="reg-label" for="reg_uname">Choose Username <span class="req">*</span></label>
+                <input type="text"
+                       class="reg-input"
+                       id="reg_uname"
+                       placeholder="e.g. alexander99"
+                       name="uname"
+                       pattern="[A-Za-z0-9]{3,}"
+                       title="Username must be at least 3 characters (letters and numbers only)"
+                       required>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="reg-form-group">
+                    <label class="reg-label" for="reg_pword">Account Password <span class="req">*</span></label>
+                    <input type="password"
+                           class="reg-input"
+                           id="reg_pword"
+                           placeholder="At least 3 characters"
+                           name="pword"
+                           minlength="3"
+                           required>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="reg-form-group">
+                    <label class="reg-label" for="reg_pword1">Confirm Password <span class="req">*</span></label>
+                    <input type="password"
+                           class="reg-input"
+                           id="reg_pword1"
+                           placeholder="Re-enter your password"
+                           name="pword1"
+                           required>
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn-reg-submit" type="submit">
+                <i class="fa fa-check-circle" style="margin-right: 8px;"></i> Complete Membership Registration
+              </button>
+
+              <div class="reg-footer-prompt">
+                Already registered with us?
+                <a href="{% url 'login' %}">Sign In to Your Account</a>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
-    <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'book/lib/wow/wow.min.js' %}"></script>
-    <script src="{% static 'book/lib/easing/easing.min.js' %}"></script>
-    <script src="{% static 'book/lib/waypoints/waypoints.min.js' %}"></script>
-    <script src="{% static 'book/lib/counterup/counterup.min.js' %}"></script>
-    <script src="{% static 'book/lib/owlcarousel/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'book/lib/tempusdominus/js/moment.min.js' %}"></script>
-    <script src="{% static 'book/lib/tempusdominus/js/moment-timezone.min.js' %}"></script>
-    <script src="{% static 'book/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js' %}"></script>
-
-    <!-- Template Javascript -->
-    <script src="{% static 'book/js/main.js' %}"></script>
-</body>
-
-</html>
+  </div>
+</section>
+{% endblock %}

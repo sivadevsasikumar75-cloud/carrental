@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Weekend Car Rentals | Premium Classic Car Collection{% endblock %}</title>
+
+    <!-- Google Fonts for Typography Hierarchy -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Rufina:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Existing Core Bootstrap 3.3.6 and Navigation -->
+    <link rel="stylesheet" href="{% static 'hpg/assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'hpg/assets/css/bootsnav.css' %}">
+    <link rel="stylesheet" href="{% static 'hpg/assets/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'hpg/assets/css/linearicons.css' %}">
+    <link rel="stylesheet" href="{% static 'hpg/assets/css/animate.css' %}">
+
+    <!-- Premium Design System Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/premium.css' %}">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    {% block content %}{% endblock %}
+
+    {% include 'footer.html' %}
+
+    <!-- Essential Scripts -->
+    <script src="{% static 'hpg/assets/js/jquery.js' %}"></script>
+    <script src="{% static 'hpg/assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'hpg/assets/js/bootsnav.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

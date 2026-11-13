@@ -1,0 +1,134 @@
+/*
+  Premium Classic Automotive Design System
+  Colors, typography, spacing, and component styles.
+  Palette:
+    --deep-navy: #101C2C;
+    --dark-charcoal: #202832;
+    --ivory: #F7F5EF;
+    --white: #FFFFFF;
+    --muted-gold: #C5A46D;
+    --soft-grey: #E9EAEC;
+*/
+
+:root {
+  --deep-navy: #101C2C;
+  --dark-charcoal: #202832;
+  --ivory: #F7F5EF;
+  --white: #FFFFFF;
+  --muted-gold: #C5A46D;
+  --soft-grey: #E9EAEC;
+
+  --font-serif: "Playfair Display", serif; /* elegant heading */
+  --font-sans: "Roboto", sans-serif;   /* clean body */
+
+  --border-radius: 4px;
+  --transition-speed: 0.2s;
+}
+
+/* Global resets & base */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  background-color: var(--ivory);
+  color: var(--dark-charcoal);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  color: var(--deep-navy);
+  margin-top: 0;
+}
+
+a {
+  color: var(--muted-gold);
+  text-decoration: none;
+  transition: color var(--transition-speed);
+}
+
+a:hover {
+  color: var(--deep-navy);
+}
+
+/* Buttons */
+.btn-premium {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--white);
+  background-color: var(--deep-navy);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.btn-premium:hover {
+  background-color: var(--muted-gold);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* Navigation Bar */
+.navbar-premium {
+  background-color: var(--deep-navy);
+  padding: 0.8rem 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-premium .nav-link {
+  color: var(--ivory);
+  margin-right: 1rem;
+  font-weight: 500;
+  transition: color var(--transition-speed);
+}
+
+.navbar-premium .nav-link:hover {
+  color: var(--muted-gold);
+}
+
+/* Footer */
+.footer-premium {
+  background-color: var(--dark-charcoal);
+  color: var(--soft-grey);
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.footer-premium a {
+  color: var(--muted-gold);
+}
+
+/* Card component for vehicle listings */
+.card-premium {
+  background: var(--white);
+  border: 1px solid var(--soft-grey);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.card-premium:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card-premium img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card-premium .card-body {
+  padding: 1rem;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .navbar-premium .nav-link {
+    display: block;
+    margin: 0.5rem 0;
+  }
+}

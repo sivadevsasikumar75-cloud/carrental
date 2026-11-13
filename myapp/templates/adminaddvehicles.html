@@ -1,177 +1,238 @@
-<!DOCTYPE html>
+{% extends "admin_base_premium.html" %}
 {% load static %}
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vehicle Management</title>
-    <link href="{% static 'af/assets/css/bootstrap.css' %}" rel="stylesheet" />
-    <link href="{% static 'af/assets/css/font-awesome.css' %}" rel="stylesheet" />
-    <link href="{% static 'af/assets/css/basic.css' %}" rel="stylesheet" />
-    <link href="{% static 'af/assets/css/custom.css' %}" rel="stylesheet" />
-    <style>
-        .panel-heading { font-weight: bold; background-color: #f5f5f5 !important; color: #333 !important; }
-        .section-title { border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px; color: #5bc0de; font-weight: bold; font-size: 12px; text-transform: uppercase; }
-        .table-v { font-size: 12px; }
-        .btn-xs { margin: 2px; }
-    </style>
-</head>
-<body>
-    <div id="wrapper">
-        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">CAR RENTAL</a>
+
+{% block title %}Register New Vehicle | Weekend Car Rentals Admin{% endblock %}
+{% block nav_add_vehicle %}active{% endblock %}
+
+{% block extra_head %}
+<style>
+    .form-group-label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #101C2C;
+        margin-bottom: 8px;
+    }
+
+    .form-group-label span.req {
+        color: #d9534f;
+    }
+
+    .admin-form-control {
+        width: 100%;
+        height: 46px;
+        padding: 10px 14px;
+        font-size: 13px;
+        border: 1px solid #EFECE4;
+        border-radius: 4px;
+        background-color: #FAF8F4;
+        color: #101C2C;
+        transition: all 0.3s ease;
+    }
+
+    .admin-form-control:focus {
+        outline: none;
+        border-color: #C5A46D;
+        background-color: #FFFFFF;
+        box-shadow: 0 0 0 3px rgba(197, 164, 109, 0.15);
+    }
+
+    textarea.admin-form-control {
+        height: auto;
+        padding: 12px 14px;
+    }
+
+    .admin-file-upload-box {
+        border: 1px dashed rgba(197, 164, 109, 0.6);
+        background: #FAF8F4;
+        padding: 12px 16px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .admin-file-upload-box:hover {
+        background: #FFFFFF;
+        border-color: #C5A46D;
+    }
+
+    .form-section-banner {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #101C2C;
+        background: #F7F5EF;
+        padding: 10px 16px;
+        border-left: 3px solid #C5A46D;
+        border-radius: 0 4px 4px 0;
+        margin: 25px 0 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .form-section-banner i {
+        color: #C5A46D;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-page-header">
+    <div>
+        <h1 class="admin-page-title">New Fleet Asset Registration</h1>
+        <p class="admin-page-subtitle">Onboard a classic, luxury, or high-performance vehicle into the active rental inventory.</p>
+    </div>
+    <div>
+        <a href="{% url 'listvehicle' %}" class="btn-navy-action">
+            <i class="fa fa-list"></i> View All Inventory
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <div class="admin-panel">
+            <div class="admin-panel-heading">
+                <h3 class="admin-panel-title">
+                    <i class="fa fa-car"></i> Vehicle Specifications & Tariffs
+                </h3>
+                <span class="status-pill status-free">New Inventory Entry</span>
             </div>
-            <div class="header-right">
-                <a href="/logout/" class="btn btn-danger"><i class="fa fa-sign-out"></i> Logout</a>
-            </div>
-        </nav>
 
-        <nav class="navbar-default navbar-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav" id="main-menu">
-                    <li><a href="/ap/"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-                    <li><a class="active-menu" href="/adp/"><i class="fa fa-car"></i> Manage Vehicles</a></li>
-                    <li><a href="/lms/"><i class="fa fa-list"></i> Vehicle List</a></li>
-                </ul>
-            </div>
-        </nav>
+            <div class="admin-panel-body" style="padding: 30px;">
+                <form role="form" method="POST" enctype="multipart/form-data" action="">
+                    {% csrf_token %}
 
-        <div id="page-wrapper">
-            <div id="page-inner">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="panel panel-info">
-                            <div class="panel-heading">NEW VEHICLE REGISTRATION</div>
-                            <div class="panel-body">
-                                <form role="form" method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
+                    <!-- Section 1: Basic Identity -->
+                    <div class="form-section-banner" style="margin-top: 0;">
+                        <i class="fa fa-id-badge"></i> 1. Vehicle Identification & Aesthetic Profile
+                    </div>
 
-                                    <div class="section-title">1. Basic Information</div>
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
-                                            <label>Vehicle No (1)</label>
-                                            <input class="form-control" name="vno" required placeholder="e.g. MH-01-1234">
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label>Vehicle Name (2)</label>
-                                            <input class="form-control" name="vname" required placeholder="e.g. Swift">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
-                                            <label>Market Price (3)</label>
-                                            <input class="form-control" name="vprice" required>
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label>Color (4)</label>
-                                            <select name="vcolor" class="form-control">
-                                                <option>White</option><option>Black</option><option>Silver</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Vehicle Photo (5)</label>
-                                        <input type="file" name="photo" class="form-control" required>
-                                    </div>
-
-                                    <div class="section-title">2. Technical Specs</div>
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
-                                            <label>Fuel Type (6)</label>
-                                            <select name="ftype" class="form-control">
-                                                <option>Petrol</option><option>Diesel</option><option>Electric</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label>Seating (7)</label>
-                                            <input type="number" name="scapacity" class="form-control" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>GPS Phone Number (8)</label>
-                                        <input type="text" name="gps_ph" class="form-control" required>
-                                    </div>
-
-                                    <div class="section-title">3. Rental & Charges</div>
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
-                                            <label>Rent Per Day (9)</label>
-                                            <input type="number" name="rday" class="form-control" required>
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label>Deposit Required (10)</label>
-                                            <input type="number" name="sdepo" class="form-control" required>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
-                                            <label>Max KM/Day (11)</label>
-                                            <input type="text" name="max_km" class="form-control" required>
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label>Excess / KM (12)</label>
-                                            <input type="text" name="echarge" class="form-control" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label>Features (13)</label>
-                                        <textarea class="form-control" name="features" rows="2"></textarea>
-                                    </div>
-
-                                    <button type="submit" class="btn btn-info btn-block">SAVE VEHICLE</button>
-                                </form>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label class="form-group-label">Registration / Plate No <span class="req">*</span></label>
+                                <input type="text" class="admin-form-control" name="vno" required placeholder="e.g. DL-01-AB-1234">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label class="form-group-label">Vehicle Make & Model Name <span class="req">*</span></label>
+                                <input type="text" class="admin-form-control" name="vname" required placeholder="e.g. BMW 6-Series Gran Coupe">
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-7">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">VEHICLE LIST</div>
-                            <div class="panel-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped table-v">
-                                        <thead>
-                                            <tr>
-                                                <th>Info</th>
-                                                <th>Technical</th>
-                                                <th>Rates</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for v in crec %}
-                                            <tr>
-                                                <td>
-                                                    <b>{{ v.vname }}</b><br>{{ v.vno }}
-                                                </td>
-                                                <td>
-                                                    {{ v.ftype }} | {{ v.scapacity }} Seater<br>
-                                                    <small>{{ v.vcolor }}</small>
-                                                </td>
-                                                <td>
-                                                    Rent: {{ v.rday }}<br>
-                                                    Depo: {{ v.sdepo }}
-                                                </td>
-                                                <td>
-                                                    <a href="/edv/{{ v.id }}/" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i></a>
-                                                    <a href="/dms/{{ v.id }}/" class="btn btn-danger btn-xs" onclick="return confirm('Delete?')"><i class="fa fa-trash"></i></a>
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label class="form-group-label">Market / Asset Valuation (₹) <span class="req">*</span></label>
+                                <input type="text" class="admin-form-control" name="vprice" required placeholder="e.g. 7500000">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label class="form-group-label">Exterior Body Color <span class="req">*</span></label>
+                                <select name="vcolor" class="admin-form-control" required>
+                                    <option value="White">Alpine White</option>
+                                    <option value="Black">Midnight Black</option>
+                                    <option value="Silver">Glacier Silver</option>
+                                    <option value="Blue">Imperial Blue</option>
+                                    <option value="Red">Crimson Red</option>
+                                    <option value="Grey">Mineral Grey</option>
+                                </select>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label class="form-group-label">High-Resolution Vehicle Photo <span class="req">*</span></label>
+                        <div class="admin-file-upload-box">
+                            <input type="file" name="photo" class="admin-form-control" style="border:none; padding: 0; background: transparent; height: auto;" required accept=".jpg,.jpeg,.png,.webp,.avif">
+                            <small style="color: #AAB4C3; display: block; margin-top: 6px;"><i class="fa fa-info-circle"></i> Recommended landscape aspect ratio (min 1200x800px) in JPG, PNG, or WebP.</small>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Technical Specifications -->
+                    <div class="form-section-banner">
+                        <i class="fa fa-cogs"></i> 2. Mechanical Specs & Telematics
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label class="form-group-label">Fuel Propulsion <span class="req">*</span></label>
+                                <select name="ftype" class="admin-form-control" required>
+                                    <option value="Petrol">Petrol</option>
+                                    <option value="Diesel">Diesel</option>
+                                    <option value="Electric">Electric / EV</option>
+                                    <option value="Hybrid">Hybrid</option>
+                                    <option value="CNG">CNG</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label class="form-group-label">Seating Capacity <span class="req">*</span></label>
+                                <input type="number" name="scapacity" class="admin-form-control" required placeholder="e.g. 5" min="2" max="12">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label class="form-group-label">GPS Telematics Contact Number <span class="req">*</span></label>
+                        <input type="text" name="gps_ph" class="admin-form-control" required placeholder="10-digit SIM linked to GPS tracker">
+                    </div>
+
+                    <!-- Section 3: Rental Terms & Financial Limits -->
+                    <div class="form-section-banner">
+                        <i class="fa fa-money"></i> 3. Rental Tariffs & Mileage Allowances
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label class="form-group-label">Daily Tariff Rate (₹ / Day) <span class="req">*</span></label>
+                                <input type="number" name="rday" class="admin-form-control" required placeholder="e.g. 7500">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label class="form-group-label">Refundable Security Deposit (₹) <span class="req">*</span></label>
+                                <input type="number" name="sdepo" class="admin-form-control" required placeholder="e.g. 20000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label class="form-group-label">Daily Mileage Allowance (Max KM / Day) <span class="req">*</span></label>
+                                <input type="number" name="max_km" class="admin-form-control" required placeholder="e.g. 250">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label class="form-group-label">Excess Mileage Charge (₹ / Extra KM) <span class="req">*</span></label>
+                                <input type="number" name="echarge" class="admin-form-control" required placeholder="e.g. 25">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 30px;">
+                        <label class="form-group-label">Bespoke Features & Luxury Amenities</label>
+                        <textarea class="admin-form-control" name="features" rows="3" placeholder="e.g. Sunroof, Harman Kardon Surround Sound, Nappa Leather, Adaptive Cruise Control, Heated Seats"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-gold-action" style="width: 100%; height: 50px; justify-content: center; font-size: 13px;">
+                        <i class="fa fa-check-circle"></i> Save & Register Vehicle Asset
+                    </button>
+                </form>
             </div>
         </div>
     </div>
-
-    <script src="{% static 'af/assets/js/jquery-1.10.2.js' %}"></script>
-    <script src="{% static 'af/assets/js/bootstrap.js' %}"></script>
-</body>
-</html>
+</div>
+{% endblock %}

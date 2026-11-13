@@ -1,95 +1,282 @@
+{% extends "base_premium.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Login V1</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'login/vendor/bootstrap/css/bootstrap.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'login/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'login/vendor/animate/animate.css' %}">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="{% static 'login/vendor/css-hamburgers/hamburgers.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'login/vendor/select2/select2.min.css' %}">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="{% static 'login/css/util.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'login/css/main.css' %}">
-<!--===============================================================================================-->
-</head>
-<body>
-	
-	<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100">
-				<div class="login100-pic js-tilt" data-tilt>
-					<img src="{% static 'login/images/icons/2021.png' %}" alt="IMG">
-				</div>
 
-				<form class="login100-form validate-form" method="post">
-					{% csrf_token %}
-					<span class="login100-form-title">
-						Member Login
-					</span>
+{% block title %}Client & Admin Portal Access | Weekend Car Rentals{% endblock %}
 
-					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name="u" placeholder="Email">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-envelope" aria-hidden="true"></i>
-						</span>
-					</div>
+{% block extra_head %}
+<style>
+  .auth-section {
+    min-height: calc(100vh - 250px);
+    display: flex;
+    align-items: center;
+    padding: 70px 0;
+    background: radial-gradient(circle at 10% 20%, rgba(16, 28, 44, 0.04) 0%, rgba(247, 245, 239, 1) 90%);
+  }
 
-					<div class="wrap-input100 validate-input" data-validate = "Password is required">
-						<input class="input100" type="password" name="p" placeholder="Password">
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
-							<i class="fa fa-lock" aria-hidden="true"></i>
-						</span>
-					</div>
-					
-					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" type="submit">
-							Login
-						</button>
-					</div>
+  .auth-card {
+    background: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 0 15px 45px rgba(16, 28, 44, 0.12);
+    border: 1px solid rgba(197, 164, 109, 0.35);
+    overflow: hidden;
+  }
 
+  .auth-visual-col {
+    background: linear-gradient(135deg, rgba(16, 28, 44, 0.95) 0%, rgba(32, 40, 50, 0.9) 100%),
+                url("{% static 'hback/assets/images/welcome-hero/new_car_bg.png' %}") center center/cover no-repeat;
+    padding: 60px 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #FFFFFF;
+    min-height: 520px;
+  }
 
+  .auth-visual-brand {
+    font-family: 'Rufina', Georgia, serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: #FFFFFF;
+  }
 
-				<div class="text-center p-t-136">
-    <a href="/tyu/" class="btn btn-primary">
-        Create Your Account
-    </a>
-</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	
-	
+  .auth-visual-brand span {
+    color: #C5A46D;
+  }
 
-	
-<!--===============================================================================================-->	
-	<script src="{% static 'login/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'login/vendor/bootstrap/js/popper.js' %}"></script>
-	<script src="{% static 'login/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'login/vendor/select2/select2.min.js' %}"></script>
-<!--===============================================================================================-->
-	<script src="{% static 'login/vendor/tilt/tilt.jquery.min.js' %}"></script>
-	<script >
-		$('.js-tilt').tilt({
-			scale: 1.1
-		})
-	</script>
-<!--===============================================================================================-->
-	<script src="js/main.js"></script>
+  .auth-visual-text h2 {
+    font-family: 'Rufina', Georgia, serif;
+    font-size: 34px;
+    color: #FFFFFF;
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
 
-</body>
-</html>
+  .auth-visual-text p {
+    color: #E9EAEC;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .auth-visual-perks {
+    list-style: none;
+    padding: 0;
+    margin: 25px 0 0;
+  }
+
+  .auth-visual-perks li {
+    font-size: 13px;
+    color: #C5A46D;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .auth-visual-perks li i {
+    margin-right: 10px;
+    font-size: 14px;
+  }
+
+  .auth-form-col {
+    padding: 55px 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .auth-header {
+    margin-bottom: 30px;
+  }
+
+  .auth-subtitle {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #C5A46D;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .auth-title {
+    font-family: 'Rufina', Georgia, serif;
+    font-size: 28px;
+    color: #101C2C;
+    margin: 0;
+  }
+
+  .auth-alert-error {
+    background-color: #fdf2f2;
+    border-left: 3px solid #d9534f;
+    color: #a94442;
+    padding: 12px 16px;
+    border-radius: 3px;
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+
+  .auth-form-group {
+    margin-bottom: 22px;
+  }
+
+  .auth-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #202832;
+    margin-bottom: 8px;
+  }
+
+  .auth-input-wrapper {
+    position: relative;
+  }
+
+  .auth-input-wrapper i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #AAB4C3;
+    font-size: 14px;
+  }
+
+  .auth-input {
+    width: 100%;
+    height: 48px;
+    padding: 10px 16px 10px 44px;
+    font-size: 14px;
+    border: 1px solid #E9EAEC;
+    border-radius: 4px;
+    background-color: #FAF8F4;
+    color: #101C2C;
+    transition: all 0.3s ease;
+  }
+
+  .auth-input:focus {
+    outline: none;
+    border-color: #C5A46D;
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(197, 164, 109, 0.15);
+  }
+
+  .btn-auth-submit {
+    width: 100%;
+    height: 50px;
+    background-color: #101C2C;
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+  }
+
+  .btn-auth-submit:hover {
+    background-color: #C5A46D;
+    color: #101C2C;
+    box-shadow: 0 4px 15px rgba(197, 164, 109, 0.35);
+  }
+
+  .auth-footer-prompt {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #E9EAEC;
+    text-align: center;
+    font-size: 13px;
+    color: #556270;
+  }
+
+  .auth-footer-prompt a {
+    color: #C5A46D;
+    font-weight: 600;
+    margin-left: 5px;
+  }
+
+  .auth-footer-prompt a:hover {
+    color: #101C2C;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+        <div class="auth-card">
+          <div class="row" style="margin: 0;">
+            <!-- Left Branding Column -->
+            <div class="col-sm-5 auth-visual-col hidden-xs">
+              <div class="auth-visual-brand">
+                <span>WEEKEND</span> CARS
+              </div>
+              <div class="auth-visual-text">
+                <h2>Welcome Back to Refined Travel.</h2>
+                <p>
+                  Sign in to access your client dashboard, review live reservations, and manage your classic motoring itinerary.
+                </p>
+                <ul class="auth-visual-perks">
+                  <li><i class="fa fa-check-circle"></i> Instant Reservation Access</li>
+                  <li><i class="fa fa-check-circle"></i> Dedicated Client Support</li>
+                  <li><i class="fa fa-check-circle"></i> Unified Admin Access</li>
+                </ul>
+              </div>
+              <div style="font-size: 11px; color: #AAB4C3; letter-spacing: 1px;">
+                EXCELLENCE IN EVERY MILE
+              </div>
+            </div>
+
+            <!-- Right Login Form Column -->
+            <div class="col-sm-7 auth-form-col">
+              <div class="auth-header">
+                <span class="auth-subtitle">Secure Gateway</span>
+                <h1 class="auth-title">Member Login</h1>
+              </div>
+
+              {% if error %}
+                <div class="auth-alert-error">
+                  <i class="fa fa-exclamation-circle" style="margin-right: 6px;"></i> {{ error }}
+                </div>
+              {% endif %}
+
+              <form method="POST" action="">
+                {% csrf_token %}
+
+                <div class="auth-form-group">
+                  <label class="auth-label" for="login_u">Username or Email</label>
+                  <div class="auth-input-wrapper">
+                    <i class="fa fa-user"></i>
+                    <input class="auth-input" id="login_u" type="text" name="u" placeholder="Enter your username or email" required autofocus>
+                  </div>
+                </div>
+
+                <div class="auth-form-group">
+                  <label class="auth-label" for="login_p">Password</label>
+                  <div class="auth-input-wrapper">
+                    <i class="fa fa-lock"></i>
+                    <input class="auth-input" id="login_p" type="password" name="p" placeholder="Enter your password" required>
+                  </div>
+                </div>
+
+                <button class="btn-auth-submit" type="submit">
+                  <i class="fa fa-sign-in" style="margin-right: 6px;"></i> Sign In
+                </button>
+
+                <div class="auth-footer-prompt">
+                  Do not have an account yet?
+                  <a href="{% url 'adduserreg' %}">Register Membership</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
